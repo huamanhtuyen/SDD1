@@ -46,7 +46,7 @@ function ProductListingContent() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="container-page py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-text-secondary mb-6">
         <Link href="/" className="hover:text-accent-primary transition-colors">Trang chủ</Link>
@@ -85,7 +85,7 @@ function ProductListingContent() {
         </div>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex gap-8">
         {/* Sidebar filters */}
         <aside className={`${showFilters ? 'block' : 'hidden'} lg:block w-full lg:w-64 flex-shrink-0`}>
           <div className="glass-card p-5 space-y-6 sticky top-24">
@@ -152,7 +152,7 @@ function ProductListingContent() {
 
         {/* Products */}
         <div className="flex-1">
-          <div className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1'}`}>
+          <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-1'}`}>
             {paginated.map((product, i) => (
               <ProductCard key={product.id} product={product} index={i} />
             ))}

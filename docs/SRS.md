@@ -1,9 +1,17 @@
 # CyberGravity — Software Requirements Specification (SRS)
 
-> **Phiên bản:** 1.0  
+> **Phiên bản:** 1.1  
 > **Ngày tạo:** 2026-03-17  
+> **Ngày cập nhật:** 2026-03-18  
 > **Tác giả:** CyberGravity Development Team  
 > **Trạng thái:** Approved
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Mô tả thay đổi |
+|-----------|------|------------------|
+| 1.0 | 2026-03-17 | Tạo mới — Đặc tả đầy đủ 8 module chức năng |
+| 1.1 | 2026-03-18 | Bổ sung NFR-08, NFR-09 (yêu cầu UI spacing/padding) |
 
 ---
 
@@ -190,6 +198,8 @@ CyberGravity là website thương mại điện tử với:
 | NFR-05 | **Accessibility** | Semantic HTML, alt text cho ảnh |
 | NFR-06 | **SEO** | Title, meta description, heading hierarchy |
 | NFR-07 | **Theme** | Dark mode mặc định, neon accent (indigo/violet/cyan) |
+| NFR-08 | **Spacing** | Container padding tối thiểu 24px (mobile), 32px (tablet), 48px (desktop). Các section cách nhau tối thiểu 80px (py-20). Nội dung không được sát lề trình duyệt |
+| NFR-09 | **Gap** | Khoảng cách giữa các phần tử trong grid/flex tối thiểu 24px (gap-6). Product card grid tối thiểu gap-6 |
 
 ---
 

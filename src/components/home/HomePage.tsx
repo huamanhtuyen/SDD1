@@ -65,7 +65,7 @@ export default function HomePage() {
         <div className="absolute top-20 left-10 w-72 h-72 bg-accent-primary/10 rounded-full blur-[100px] animate-float" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent-tertiary/10 rounded-full blur-[120px] animate-float" style={{ animationDelay: '1.5s' }} />
 
-        <div className="relative max-w-7xl mx-auto px-4 py-20 md:py-32">
+        <div className="relative container-page py-20 md:py-32">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -105,7 +105,7 @@ export default function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
+      <section className="container-page py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,7 +118,7 @@ export default function HomePage() {
           <p className="text-text-secondary">Khám phá hàng nghìn sản phẩm công nghệ chính hãng</p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {categories.map((cat, i) => {
             const Icon = iconMap[cat.icon] || Cpu;
             return (
@@ -146,8 +146,8 @@ export default function HomePage() {
       </section>
 
       {/* Flash Sale */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="glass-card p-8 relative overflow-hidden">
+      <section className="container-page py-20">
+        <div className="glass-card p-8 md:p-10 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-error/5 via-transparent to-accent-primary/5" />
           <div className="relative">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
@@ -171,7 +171,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
               {flashSale.map((product, i) => (
                 <div key={product.id} className="product-card p-3 space-y-2">
                   <div className="aspect-square rounded-lg bg-bg-tertiary/30 flex items-center justify-center">
@@ -194,7 +194,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured Products */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
+      <section className="container-page py-20">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl md:text-3xl font-heading font-bold">
@@ -207,7 +207,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {featured.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
           ))}
@@ -215,7 +215,7 @@ export default function HomePage() {
       </section>
 
       {/* New Products */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
+      <section className="container-page py-20">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl md:text-3xl font-heading font-bold">
@@ -228,7 +228,7 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {newProducts.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
           ))}
@@ -236,7 +236,7 @@ export default function HomePage() {
       </section>
 
       {/* Banner */}
-      <section className="max-w-7xl mx-auto px-4 py-10">
+      <section className="container-page py-16">
         <div className="glass-card p-8 md:p-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-accent-primary/10 to-accent-tertiary/10" />
           <div className="absolute top-0 right-0 w-96 h-96 bg-accent-primary/5 rounded-full blur-[100px]" />

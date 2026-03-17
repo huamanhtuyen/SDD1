@@ -19,7 +19,7 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+      <div className="container-page py-20 text-center">
         <h1 className="text-2xl font-heading font-bold mb-4">Không tìm thấy sản phẩm</h1>
         <Link href="/products" className="btn-primary">Quay lại danh sách</Link>
       </div>
@@ -35,7 +35,7 @@ export default function ProductDetailPage() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="container-page py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-text-secondary mb-6 flex-wrap">
         <Link href="/" className="hover:text-accent-primary transition-colors">Trang chủ</Link>

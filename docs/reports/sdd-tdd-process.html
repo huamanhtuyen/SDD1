@@ -134,7 +134,7 @@ strong{color:#f0f6fc}
 <div class="hero">
   <div class="container">
     <h1>Quy trình SDD & TDD trong Phát triển Phần mềm</h1>
-    <p class="subtitle">Software Design Document & Test-Driven Development — Đặc biệt cho quy trình chỉnh sửa chức năng</p>
+    <p class="subtitle">Spec-Driven Development & Test-Driven Development — Đặc biệt cho quy trình chỉnh sửa chức năng</p>
     <span class="project">📦 Dự án: CyberGravity E-Commerce · Ngày: 18/03/2026</span>
   </div>
 </div>
@@ -160,7 +160,7 @@ strong{color:#f0f6fc}
 <section id="overview">
   <h2><span class="icon" style="background:rgba(139,92,246,0.15)">📋</span> 1. Tổng quan quy trình</h2>
 
-  <p>Quy trình phát triển phần mềm kết hợp <span class="highlight">SDD (Software Design Document)</span> và <span class="highlight">TDD (Test-Driven Development)</span> đảm bảo chất lượng code từ giai đoạn thiết kế đến triển khai. Đặc biệt quan trọng khi <em>chỉnh sửa chức năng có sẵn</em> — nơi rủi ro regression bugs cao nhất.</p>
+  <p>Quy trình phát triển phần mềm kết hợp <span class="highlight">SDD (Spec-Driven Development)</span> và <span class="highlight">TDD (Test-Driven Development)</span> đảm bảo chất lượng code từ giai đoạn đặc tả đến triển khai. Đặc biệt quan trọng khi <em>chỉnh sửa chức năng có sẵn</em> — nơi rủi ro regression bugs cao nhất.</p>
 
   <div class="flow">
     <div class="flow-step purple"><span class="emoji">📋</span><span class="num">1</span><span class="label">SRS</span><span class="sub">Yêu cầu</span></div>
@@ -178,17 +178,17 @@ strong{color:#f0f6fc}
 
   <div class="alert alert-info">
     <span>💡</span>
-    <div><strong>SDD</strong> trả lời câu hỏi "làm NHƯ THẾ NÀO?" — <strong>TDD</strong> đảm bảo "làm ĐÚNG chưa?" Kết hợp cả hai tạo nên quy trình phát triển chặt chẽ và kiểm chứng được.</div>
+    <div><strong>SDD</strong> trả lời câu hỏi "spec yêu cầu GÌ?" — <strong>TDD</strong> đảm bảo "code ĐÁP ỨNG spec chưa?" Kết hợp cả hai tạo nên quy trình phát triển chặt chẽ và kiểm chứng được.</div>
   </div>
 </section>
 
 <!-- ==================== S2: SDD ==================== -->
 <section id="sdd">
-  <h2><span class="icon" style="background:rgba(6,182,212,0.15)">📐</span> 2. Quy trình SDD — Software Design Document</h2>
+  <h2><span class="icon" style="background:rgba(6,182,212,0.15)">📐</span> 2. Quy trình SDD — Spec-Driven Development</h2>
 
-  <p>SDD là tài liệu mô tả <em>kiến trúc, thiết kế chi tiết và các quyết định kỹ thuật</em> của phần mềm. SDD được tạo <strong>sau SRS</strong> và <strong>trước khi code</strong>.</p>
+  <p>SDD là phương pháp phát triển <em>dựa trên đặc tả (specification) làm gốc</em>. Mọi code đều phải được viết từ spec (SRS), đảm bảo truy vết được từ yêu cầu → thiết kế → code → test. SDD được thực hiện <strong>trước khi code</strong>.</p>
 
-  <h3>2.1. Các thành phần của SDD</h3>
+  <h3>2.1. Các thành phần đặc tả SDD</h3>
 
   <table>
     <tr><th>Thành phần</th><th>Mô tả</th><th>Ví dụ CyberGravity</th></tr>
@@ -403,7 +403,7 @@ strong{color:#f0f6fc}
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
     <div class="card">
-      <div class="card-title"><span class="badge badge-purple">SDD</span> Tài liệu thiết kế</div>
+      <div class="card-title"><span class="badge badge-purple">SDD</span> Đặc tả & Thiết kế</div>
       <div class="card-desc">SRS.md, design.md, wireframes (.md), data models (types.ts)</div>
     </div>
     <div class="card">
@@ -444,7 +444,7 @@ strong{color:#f0f6fc}
     </div>
     <div class="card">
       <div class="card-title">👥 Teamwork hiệu quả</div>
-      <div class="card-desc">SDD giúp team hiểu thiết kế trước khi code. TDD đảm bảo code review dễ dàng.</div>
+      <div class="card-desc">SDD giúp team hiểu spec trước khi code. TDD đảm bảo code review dễ dàng.</div>
     </div>
     <div class="card">
       <div class="card-title">📈 Đo lường được</div>
@@ -459,7 +459,7 @@ strong{color:#f0f6fc}
 <div class="footer">
   <div class="container">
     <p>CyberGravity © 2026 · Tài liệu quy trình phát triển phần mềm</p>
-    <p style="margin-top:4px">SDD + TDD = Software Quality Assurance</p>
+    <p style="margin-top:4px">SDD + TDD = Spec-Driven Development + Test-Driven Development</p>
   </div>
 </div>
 

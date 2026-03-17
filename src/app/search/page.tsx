@@ -25,7 +25,7 @@ function SearchContent() {
   const popularSearches = ['RTX 4070', 'Laptop gaming', 'iPhone 16', 'Bàn phím cơ', 'Chuột gaming', 'RAM DDR5', 'SSD NVMe', 'Tai nghe'];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="container-page py-8">
       <h1 className="text-2xl md:text-3xl font-heading font-bold mb-6">
         Tìm kiếm <span className="gradient-text">sản phẩm</span>
       </h1>
