@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quy trình SDD & TDD — CyberGravity</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Inter',system-ui,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7}
+.container{max-width:1100px;margin:0 auto;padding:0 40px}
+
+/* Header */
+.hero{background:linear-gradient(135deg,#0d1117 0%,#161b22 40%,#1a1040 100%);padding:60px 0 50px;border-bottom:1px solid #30363d;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,0.12),transparent 70%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(6,182,212,0.08),transparent 70%);border-radius:50%}
+.hero h1{font-size:36px;font-weight:700;background:linear-gradient(135deg,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
+.hero .subtitle{font-size:18px;color:#8b949e;margin-top:8px;position:relative;z-index:1}
+.hero .project{display:inline-block;margin-top:16px;padding:6px 16px;border-radius:20px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);color:#a78bfa;font-size:13px;position:relative;z-index:1}
+
+/* Navigation */
+.toc{background:#161b22;border-bottom:1px solid #30363d;padding:20px 0;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.toc-inner{display:flex;gap:8px;flex-wrap:wrap}
+.toc a{color:#8b949e;text-decoration:none;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:500;transition:all .2s}
+.toc a:hover,.toc a.active{background:rgba(139,92,246,0.12);color:#a78bfa}
+
+/* Sections */
+section{padding:48px 0;border-bottom:1px solid #21262d}
+section:last-child{border-bottom:none}
+h2{font-size:26px;font-weight:700;color:#f0f6fc;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+h2 .icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+h3{font-size:18px;color:#f0f6fc;margin:24px 0 12px;font-weight:600}
+p{color:#c9d1d9;margin-bottom:16px}
+
+/* Cards */
+.card{background:rgba(22,27,34,0.8);border:1px solid #30363d;border-radius:12px;padding:24px;margin-bottom:16px;transition:border-color .2s}
+.card:hover{border-color:rgba(139,92,246,0.4)}
+.card-title{font-size:16px;font-weight:600;color:#f0f6fc;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card-desc{color:#8b949e;font-size:14px}
+
+/* Flow Diagram */
+.flow{display:flex;align-items:stretch;gap:0;margin:24px 0;flex-wrap:wrap;justify-content:center}
+.flow-step{flex:1;min-width:140px;max-width:180px;text-align:center;padding:16px 12px;background:#161b22;border:1px solid #30363d;border-radius:12px;position:relative;transition:all .3s}
+.flow-step:hover{border-color:#8b5cf6;transform:translateY(-4px);box-shadow:0 8px 24px rgba(139,92,246,0.15)}
+.flow-step .num{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-bottom:8px}
+.flow-step .emoji{font-size:28px;display:block;margin-bottom:6px}
+.flow-step .label{font-size:13px;font-weight:600;color:#f0f6fc}
+.flow-step .sub{font-size:11px;color:#8b949e;margin-top:4px}
+.flow-arrow{display:flex;align-items:center;color:#484f58;font-size:20px;padding:0 4px}
+
+/* Color themes for steps */
+.flow-step.purple .num{background:rgba(139,92,246,0.2);color:#a78bfa}
+.flow-step.cyan .num{background:rgba(6,182,212,0.2);color:#22d3ee}
+.flow-step.green .num{background:rgba(63,185,80,0.2);color:#3fb950}
+.flow-step.amber .num{background:rgba(210,153,34,0.2);color:#e3b341}
+.flow-step.red .num{background:rgba(248,81,73,0.2);color:#f85149}
+.flow-step.blue .num{background:rgba(56,139,253,0.2);color:#58a6ff}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th{text-align:left;padding:12px 16px;background:#161b22;color:#f0f6fc;font-weight:600;border-bottom:2px solid #30363d}
+td{padding:10px 16px;border-bottom:1px solid #21262d;color:#c9d1d9}
+tr:hover td{background:rgba(136,198,255,0.04)}
+
+/* TDD Cycle */
+.tdd-cycle{display:flex;justify-content:center;gap:32px;margin:32px 0;flex-wrap:wrap}
+.tdd-phase{width:260px;padding:24px;border-radius:16px;text-align:center;position:relative}
+.tdd-phase.red-phase{background:linear-gradient(135deg,rgba(248,81,73,0.08),rgba(248,81,73,0.02));border:2px solid rgba(248,81,73,0.3)}
+.tdd-phase.green-phase{background:linear-gradient(135deg,rgba(63,185,80,0.08),rgba(63,185,80,0.02));border:2px solid rgba(63,185,80,0.3)}
+.tdd-phase.blue-phase{background:linear-gradient(135deg,rgba(56,139,253,0.08),rgba(56,139,253,0.02));border:2px solid rgba(56,139,253,0.3)}
+.tdd-phase .phase-icon{font-size:48px;margin-bottom:12px}
+.tdd-phase .phase-title{font-size:20px;font-weight:700;margin-bottom:8px}
+.tdd-phase.red-phase .phase-title{color:#f85149}
+.tdd-phase.green-phase .phase-title{color:#3fb950}
+.tdd-phase.blue-phase .phase-title{color:#58a6ff}
+.tdd-phase .phase-desc{font-size:13px;color:#8b949e;line-height:1.6}
+.tdd-arrow{display:flex;align-items:center;font-size:28px;color:#484f58}
+
+/* Code Block */
+.code-block{background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:16px 20px;font-family:'Fira Code','JetBrains Mono',monospace;font-size:13px;line-height:1.6;overflow-x:auto;margin:12px 0}
+.code-block .cmt{color:#8b949e;font-style:italic}
+.code-block .kw{color:#ff7b72}
+.code-block .fn{color:#d2a8ff}
+.code-block .str{color:#a5d6ff}
+.code-block .pass{color:#3fb950;font-weight:700}
+.code-block .fail{color:#f85149;font-weight:700}
+
+/* Badge */
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.badge-purple{background:rgba(139,92,246,0.15);color:#a78bfa}
+.badge-green{background:rgba(63,185,80,0.15);color:#3fb950}
+.badge-red{background:rgba(248,81,73,0.15);color:#f85149}
+.badge-blue{background:rgba(56,139,253,0.15);color:#58a6ff}
+.badge-amber{background:rgba(210,153,34,0.15);color:#e3b341}
+
+/* Alert */
+.alert{padding:16px 20px;border-radius:10px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+.alert-info{background:rgba(56,139,253,0.08);border:1px solid rgba(56,139,253,0.3);color:#58a6ff}
+.alert-warn{background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.3);color:#e3b341}
+.alert-success{background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.3);color:#3fb950}
+
+/* Comparison */
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.comparison .col{padding:20px;border-radius:12px}
+.comparison .col-old{background:rgba(248,81,73,0.05);border:1px solid rgba(248,81,73,0.2)}
+.comparison .col-new{background:rgba(63,185,80,0.05);border:1px solid rgba(63,185,80,0.2)}
+.comparison .col-title{font-size:14px;font-weight:700;margin-bottom:12px}
+.comparison .col-old .col-title{color:#f85149}
+.comparison .col-new .col-title{color:#3fb950}
+
+/* Footer */
+.footer{padding:40px 0;text-align:center;color:#484f58;font-size:13px;border-top:1px solid #21262d;margin-top:40px}
+
+/* Highlight */
+.highlight{color:#a78bfa;font-weight:600}
+em{color:#e3b341;font-style:normal;font-weight:500}
+strong{color:#f0f6fc}
+
+/* Scenario */
+.scenario{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin:20px 0}
+.scenario-title{font-size:16px;font-weight:700;color:#f0f6fc;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:8px}
+.step-list{list-style:none;padding:0}
+.step-list li{padding:10px 0 10px 32px;position:relative;border-left:2px solid #30363d;margin-left:12px}
+.step-list li::before{content:attr(data-step);position:absolute;left:-13px;top:8px;width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-list li.s-red::before{background:rgba(248,81,73,0.2);color:#f85149;border:2px solid #f85149}
+.step-list li.s-green::before{background:rgba(63,185,80,0.2);color:#3fb950;border:2px solid #3fb950}
+.step-list li.s-blue::before{background:rgba(56,139,253,0.2);color:#58a6ff;border:2px solid #58a6ff}
+.step-list li.s-purple::before{background:rgba(139,92,246,0.2);color:#a78bfa;border:2px solid #a78bfa}
+.step-list li:last-child{border-left-color:transparent}
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<div class="hero">
+  <div class="container">
+    <h1>Quy trình SDD & TDD trong Phát triển Phần mềm</h1>
+    <p class="subtitle">Software Design Document & Test-Driven Development — Đặc biệt cho quy trình chỉnh sửa chức năng</p>
+    <span class="project">📦 Dự án: CyberGravity E-Commerce · Ngày: 18/03/2026</span>
+  </div>
+</div>
+
+<!-- ==================== TOC ==================== -->
+<div class="toc">
+  <div class="container">
+    <div class="toc-inner">
+      <a href="#overview">Tổng quan</a>
+      <a href="#sdd">Quy trình SDD</a>
+      <a href="#tdd">Quy trình TDD</a>
+      <a href="#modify">Chỉnh sửa chức năng</a>
+      <a href="#example">Ví dụ thực tế</a>
+      <a href="#artifacts">Sản phẩm đầu ra</a>
+      <a href="#benefits">Lợi ích</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ==================== S1: OVERVIEW ==================== -->
+<section id="overview">
+  <h2><span class="icon" style="background:rgba(139,92,246,0.15)">📋</span> 1. Tổng quan quy trình</h2>
+
+  <p>Quy trình phát triển phần mềm kết hợp <span class="highlight">SDD (Software Design Document)</span> và <span class="highlight">TDD (Test-Driven Development)</span> đảm bảo chất lượng code từ giai đoạn thiết kế đến triển khai. Đặc biệt quan trọng khi <em>chỉnh sửa chức năng có sẵn</em> — nơi rủi ro regression bugs cao nhất.</p>
+
+  <div class="flow">
+    <div class="flow-step purple"><span class="emoji">📋</span><span class="num">1</span><span class="label">SRS</span><span class="sub">Yêu cầu</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step cyan"><span class="emoji">🎨</span><span class="num">2</span><span class="label">SDD</span><span class="sub">Thiết kế</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step red"><span class="emoji">🔴</span><span class="num">3</span><span class="label">RED</span><span class="sub">Viết test fail</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step green"><span class="emoji">🟢</span><span class="num">4</span><span class="label">GREEN</span><span class="sub">Code pass</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step blue"><span class="emoji">🔵</span><span class="num">5</span><span class="label">REFACTOR</span><span class="sub">Tối ưu</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step amber"><span class="emoji">📊</span><span class="num">6</span><span class="label">VERIFY</span><span class="sub">Coverage</span></div>
+  </div>
+
+  <div class="alert alert-info">
+    <span>💡</span>
+    <div><strong>SDD</strong> trả lời câu hỏi "làm NHƯ THẾ NÀO?" — <strong>TDD</strong> đảm bảo "làm ĐÚNG chưa?" Kết hợp cả hai tạo nên quy trình phát triển chặt chẽ và kiểm chứng được.</div>
+  </div>
+</section>
+
+<!-- ==================== S2: SDD ==================== -->
+<section id="sdd">
+  <h2><span class="icon" style="background:rgba(6,182,212,0.15)">📐</span> 2. Quy trình SDD — Software Design Document</h2>
+
+  <p>SDD là tài liệu mô tả <em>kiến trúc, thiết kế chi tiết và các quyết định kỹ thuật</em> của phần mềm. SDD được tạo <strong>sau SRS</strong> và <strong>trước khi code</strong>.</p>
+
+  <h3>2.1. Các thành phần của SDD</h3>
+
+  <table>
+    <tr><th>Thành phần</th><th>Mô tả</th><th>Ví dụ CyberGravity</th></tr>
+    <tr><td><strong>Kiến trúc hệ thống</strong></td><td>Sơ đồ tổng thể, các module chính</td><td>Next.js App Router + React Context</td></tr>
+    <tr><td><strong>Thiết kế giao diện</strong></td><td>Wireframes, mockups, design system</td><td>7 wireframes (.md + .png)</td></tr>
+    <tr><td><strong>Thiết kế dữ liệu</strong></td><td>Database schema, data models</td><td>Product, Category, CartItem types</td></tr>
+    <tr><td><strong>Thiết kế API</strong></td><td>Endpoints, request/response format</td><td>Data functions (getProducts, search...)</td></tr>
+    <tr><td><strong>Thiết kế component</strong></td><td>Component tree, props, state</td><td>ProductCard, CartContext, ChatWidget</td></tr>
+    <tr><td><strong>Luồng xử lý</strong></td><td>Sequence diagrams, state flows</td><td>Cart flow, Search flow, Auth flow</td></tr>
+  </table>
+
+  <h3>2.2. Quy trình tạo SDD cho chức năng mới</h3>
+
+  <div class="scenario">
+    <div class="scenario-title">📐 Quy trình SDD: Feature Mới → Chỉnh sửa</div>
+    <ol class="step-list">
+      <li class="s-purple" data-step="1"><strong>Phân tích yêu cầu</strong> — Đọc SRS, xác định scope chức năng cần thiết kế</li>
+      <li class="s-purple" data-step="2"><strong>Vẽ wireframe</strong> — Tạo wireframe dạng markdown (ASCII layout + component specs)</li>
+      <li class="s-blue" data-step="3"><strong>Định nghĩa data model</strong> — Types/Interfaces cho dữ liệu (TypeScript)</li>
+      <li class="s-blue" data-step="4"><strong>Thiết kế component tree</strong> — Cây component, props, state management</li>
+      <li class="s-green" data-step="5"><strong>Viết design doc</strong> — Ghi lại tất cả quyết định thiết kế vào SDD</li>
+      <li class="s-green" data-step="6"><strong>Review</strong> — Đội ngũ review SDD trước khi bắt đầu code</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== S3: TDD ==================== -->
+<section id="tdd">
+  <h2><span class="icon" style="background:rgba(63,185,80,0.15)">🧪</span> 3. Quy trình TDD — Test-Driven Development</h2>
+
+  <p>TDD là phương pháp phát triển <em>viết test trước, code sau</em>. Mỗi tính năng đều trải qua 3 giai đoạn: <span class="badge badge-red">RED</span> → <span class="badge badge-green">GREEN</span> → <span class="badge badge-blue">REFACTOR</span></p>
+
+  <div class="tdd-cycle">
+    <div class="tdd-phase red-phase">
+      <div class="phase-icon">🔴</div>
+      <div class="phase-title">RED</div>
+      <div class="phase-desc">Viết test case mô tả hành vi mong muốn.<br><strong>Test PHẢI FAIL</strong> vì chưa có code.</div>
+    </div>
+    <div class="tdd-arrow">→</div>
+    <div class="tdd-phase green-phase">
+      <div class="phase-icon">🟢</div>
+      <div class="phase-title">GREEN</div>
+      <div class="phase-desc">Viết code <em>tối thiểu</em> để test PASS.<br>Không tối ưu, chỉ cần đúng.</div>
+    </div>
+    <div class="tdd-arrow">→</div>
+    <div class="tdd-phase blue-phase">
+      <div class="phase-icon">🔵</div>
+      <div class="phase-title">REFACTOR</div>
+      <div class="phase-desc">Cải thiện code không đổi hành vi.<br>Tất cả test vẫn <strong>PASS</strong>.</div>
+    </div>
+  </div>
+
+  <h3>3.1. Ví dụ TDD: Hàm calculateDiscount()</h3>
+
+  <div class="comparison">
+    <div class="col col-old">
+      <div class="col-title">🔴 Bước 1: RED — Viết test trước</div>
+      <div class="code-block">
+<span class="cmt">// __tests__/utils.test.ts</span>
+<span class="fn">test</span>(<span class="str">'returns correct discount %'</span>, () =&gt; {
+  <span class="fn">expect</span>(<span class="fn">calculateDiscount</span>(100000, 80000))
+    .toBe(20);  <span class="cmt">// Mong đợi 20%</span>
+});
+
+<span class="fn">test</span>(<span class="str">'returns 0 when original is 0'</span>, () =&gt; {
+  <span class="fn">expect</span>(<span class="fn">calculateDiscount</span>(0, 80000))
+    .toBe(0);
+});
+
+<span class="cmt">// ❌ Chạy test → FAIL (chưa có hàm)</span>
+<span class="fail">FAIL  2 tests failed</span>
+      </div>
+    </div>
+    <div class="col col-new">
+      <div class="col-title">🟢 Bước 2: GREEN — Code vừa đủ</div>
+      <div class="code-block">
+<span class="cmt">// src/lib/utils.ts</span>
+<span class="kw">export function</span> <span class="fn">calculateDiscount</span>(
+  original: number,
+  current: number
+): number {
+  <span class="kw">if</span> (original &lt;= 0) <span class="kw">return</span> 0;
+  <span class="kw">return</span> Math.round(
+    ((original - current) / original) * 100
+  );
+}
+
+<span class="cmt">// ✅ Chạy test → PASS</span>
+<span class="pass">PASS  2 tests passed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== S4: MODIFY ==================== -->
+<section id="modify">
+  <h2><span class="icon" style="background:rgba(210,153,34,0.15)">🔧</span> 4. Quy trình chỉnh sửa chức năng (quan trọng nhất)</h2>
+
+  <div class="alert alert-warn">
+    <span>⚠️</span>
+    <div><strong>80% bugs trong phần mềm đến từ việc chỉnh sửa code hiện có</strong> — không phải từ code mới. Quy trình SDD+TDD đặc biệt quan trọng khi sửa chức năng!</div>
+  </div>
+
+  <p>Khi cần chỉnh sửa một chức năng đã có (ví dụ: thay đổi logic giỏ hàng, thêm field mới cho sản phẩm, sửa thuật toán tìm kiếm), quy trình phải tuân thủ <strong>6 bước</strong> sau:</p>
+
+  <div class="scenario">
+    <div class="scenario-title">🔧 Quy trình chỉnh sửa chức năng — 6 bước</div>
+    <ol class="step-list">
+      <li class="s-purple" data-step="1">
+        <strong>Cập nhật SRS/SDD</strong> — Ghi nhận yêu cầu thay đổi vào tài liệu. Mô tả: hành vi cũ → hành vi mới. Cập nhật wireframe nếu ảnh hưởng UI.
+        <div class="code-block" style="margin-top:8px">
+<span class="cmt">// Ví dụ: Thay đổi discount code từ 4 mã → 6 mã</span>
+<span class="cmt">// SRS ghi:</span>
+<span class="cmt">//   - Cũ: CYBER10(10%), CYBER20(20%), NEWUSER(15%), FLASHSALE(25%)</span>
+<span class="cmt">//   - Mới: + SUMMER30(30%), VIP50(50%)</span>
+        </div>
+      </li>
+      <li class="s-red" data-step="2">
+        <strong>🔴 RED: Viết test cho hành vi MỚI</strong> — Test case cho cả hành vi mới VÀ đảm bảo hành vi cũ không bị phá vỡ.
+        <div class="code-block" style="margin-top:8px">
+<span class="cmt">// Thêm test mới (phải FAIL)</span>
+<span class="fn">test</span>(<span class="str">'applies SUMMER30 code for 30%'</span>, () =&gt; {
+  act(() =&gt; { cart.addItem(product); });   <span class="cmt">// 5,000,000đ</span>
+  act(() =&gt; { cart.applyDiscount(<span class="str">'SUMMER30'</span>); });
+  <span class="fn">expect</span>(cart.discountPercent).toBe(30);
+  <span class="fn">expect</span>(cart.total).toBe(3500000);       <span class="cmt">// 5M × 0.7</span>
+});
+
+<span class="fn">test</span>(<span class="str">'applies VIP50 code for 50%'</span>, () =&gt; {
+  act(() =&gt; { cart.applyDiscount(<span class="str">'VIP50'</span>); });
+  <span class="fn">expect</span>(cart.discountPercent).toBe(50);
+});
+
+<span class="cmt">// Chạy test:</span>
+<span class="pass">PASS  17 tests (cũ vẫn pass)</span>
+<span class="fail">FAIL   2 tests (mới fail — đúng mong đợi)</span>
+        </div>
+      </li>
+      <li class="s-green" data-step="3">
+        <strong>🟢 GREEN: Sửa code để pass</strong> — Chỉnh sửa source code tối thiểu để test mới PASS, đồng thời test cũ vẫn PASS.
+        <div class="code-block" style="margin-top:8px">
+<span class="cmt">// src/context/CartContext.tsx — Thêm 2 mã mới</span>
+<span class="kw">const</span> VALID_CODES: Record&lt;string, number&gt; = {
+  CYBER10: 10,
+  CYBER20: 20,
+  NEWUSER: 15,
+  FLASHSALE: 25,
+  <span class="pass">SUMMER30: 30,   // ← THÊM MỚI</span>
+  <span class="pass">VIP50: 50,      // ← THÊM MỚI</span>
+};
+
+<span class="cmt">// Chạy lại test:</span>
+<span class="pass">PASS  19 tests (tất cả pass ✅)</span>
+        </div>
+      </li>
+      <li class="s-blue" data-step="4">
+        <strong>🔵 REFACTOR: Tối ưu (nếu cần)</strong> — Cải thiện code quality mà không thay đổi hành vi. Chạy lại toàn bộ test → vẫn PASS.
+      </li>
+      <li class="s-purple" data-step="5">
+        <strong>E2E Test</strong> — Cập nhật/thêm E2E test cho luồng hoàn chỉnh. Kiểm tra từ góc nhìn người dùng.
+      </li>
+      <li class="s-green" data-step="6">
+        <strong>✅ Kiểm tra Coverage</strong> — Chạy <code>npm run test:coverage</code> để đảm bảo code mới được bao phủ ≥ 90%. Tạo báo cáo.
+      </li>
+    </ol>
+  </div>
+
+  <div class="alert alert-success">
+    <span>✅</span>
+    <div><strong>Nguyên tắc vàng:</strong> Nếu test cũ vẫn PASS sau khi sửa code → không có regression bug. Nếu test cũ FAIL → phát hiện lỗi ngay lập tức, trước khi deploy.</div>
+  </div>
+</section>
+
+<!-- ==================== S5: EXAMPLE ==================== -->
+<section id="example">
+  <h2><span class="icon" style="background:rgba(248,81,73,0.15)">💻</span> 5. Ví dụ thực tế: Dự án CyberGravity</h2>
+
+  <h3>5.1. Cấu trúc test trong dự án</h3>
+  <div class="code-block">
+<span class="cmt">📂 CyberGravity/</span>
+├── <span class="fn">__tests__/</span>                    <span class="cmt">← Unit Tests (Jest)</span>
+│   ├── utils.test.ts              <span class="cmt">28 tests — utility functions</span>
+│   ├── data.test.ts               <span class="cmt">37 tests — data access layer</span>
+│   └── cart-context.test.tsx      <span class="cmt">19 tests — CartContext state</span>
+├── <span class="fn">e2e/</span>                          <span class="cmt">← E2E Tests (Playwright)</span>
+│   ├── homepage.spec.ts           <span class="cmt"> 7 tests</span>
+│   ├── products.spec.ts           <span class="cmt"> 6 tests</span>
+│   ├── cart-search.spec.ts        <span class="cmt"> 6 tests</span>
+│   └── buildpc-auth-chat.spec.ts  <span class="cmt"> 5 tests</span>
+└── <span class="fn">docs/</span>
+    ├── SRS.md                     <span class="cmt">← Software Requirements Spec</span>
+    ├── design.md                  <span class="cmt">← Software Design Document</span>
+    ├── test-cases.md              <span class="cmt">← 66 test cases documented</span>
+    ├── wireframes/                <span class="cmt">← 7 markdown wireframes</span>
+    └── reports/                   <span class="cmt">← Coverage & Test reports</span>
+  </div>
+
+  <h3>5.2. Kết quả Coverage thực tế</h3>
+  <table>
+    <tr><th>Module</th><th>Statements (C0)</th><th>Branches (C1)</th><th>Functions</th><th>Đánh giá</th></tr>
+    <tr><td>CartContext.tsx</td><td>94.1%</td><td>89.3%</td><td>100%</td><td><span class="badge badge-green">Tốt</span></td></tr>
+    <tr><td>data.ts</td><td>97.1%</td><td>95.6%</td><td>94.1%</td><td><span class="badge badge-green">Rất tốt</span></td></tr>
+    <tr><td>utils.ts</td><td>92.7%</td><td>94.7%</td><td>87.5%</td><td><span class="badge badge-green">Tốt</span></td></tr>
+    <tr><td>categories.ts</td><td>100%</td><td>100%</td><td>100%</td><td><span class="badge badge-green">Hoàn hảo</span></td></tr>
+    <tr><td>products.ts</td><td>100%</td><td>94.7%</td><td>100%</td><td><span class="badge badge-green">Hoàn hảo</span></td></tr>
+  </table>
+</section>
+
+<!-- ==================== S6: ARTIFACTS ==================== -->
+<section id="artifacts">
+  <h2><span class="icon" style="background:rgba(56,139,253,0.15)">📦</span> 6. Sản phẩm đầu ra của quy trình</h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card">
+      <div class="card-title"><span class="badge badge-purple">SDD</span> Tài liệu thiết kế</div>
+      <div class="card-desc">SRS.md, design.md, wireframes (.md), data models (types.ts)</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-red">RED</span> Test scripts</div>
+      <div class="card-desc">Unit tests (Jest), E2E tests (Playwright), test-cases.md</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-green">GREEN</span> Source code</div>
+      <div class="card-desc">Components, data layer, context, pages — code pass all tests</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="badge badge-blue">VERIFY</span> Báo cáo</div>
+      <div class="card-desc">coverage-report.md, test-execution-report.md, coverage HTML</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== S7: BENEFITS ==================== -->
+<section id="benefits">
+  <h2><span class="icon" style="background:rgba(63,185,80,0.15)">🎯</span> 7. Lợi ích khi áp dụng SDD + TDD</h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div class="card">
+      <div class="card-title">🛡️ Phòng ngừa Regression</div>
+      <div class="card-desc">Test cũ tự động phát hiện khi code mới phá vỡ tính năng cũ — giảm <strong>80% bugs</strong> khi sửa code.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📄 Tài liệu sống</div>
+      <div class="card-desc">Test cases chính là tài liệu mô tả hành vi hệ thống — luôn cập nhật theo code.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚡ Tự tin Deploy</div>
+      <div class="card-desc">Coverage ≥ 90% + tất cả test PASS → tự tin deploy mà không lo lỗi ẩn.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔄 Refactor an toàn</div>
+      <div class="card-desc">Có test bảo vệ, developer tự tin refactor code mà không sợ phá vỡ logic.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">👥 Teamwork hiệu quả</div>
+      <div class="card-desc">SDD giúp team hiểu thiết kế trước khi code. TDD đảm bảo code review dễ dàng.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">📈 Đo lường được</div>
+      <div class="card-desc">Coverage C0/C1, test pass rate, execution time — tất cả đều định lượng được.</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+  <div class="container">
+    <p>CyberGravity © 2026 · Tài liệu quy trình phát triển phần mềm</p>
+    <p style="margin-top:4px">SDD + TDD = Software Quality Assurance</p>
+  </div>
+</div>
+
+</body>
+</html>
