@@ -1,48 +1,21 @@
 # CyberGravity — Wireframes
 
-Tài liệu wireframe cho các trang chính của website CyberGravity.
+Tài liệu wireframe cho các trang chính của website CyberGravity.  
+Mỗi wireframe bao gồm: ASCII layout, chi tiết component, state management, responsive breakpoints.
+
+---
 
 ## Danh sách Wireframes
 
-### 1. Trang chủ (Homepage)
-![Homepage Wireframe](./homepage.png)
-
-**Mô tả:** Hero banner, danh mục sản phẩm (8 categories), Flash Sale với countdown, sản phẩm nổi bật, banner Build PC, footer.
-
----
-
-### 2. Danh sách sản phẩm (Product Listing)
-![Product Listing Wireframe](./products.png)
-
-**Mô tả:** Sidebar bộ lọc (danh mục, khoảng giá, thương hiệu, đánh giá), lưới sản phẩm 3 cột, sắp xếp, phân trang, breadcrumb.
-
----
-
-### 3. Chi tiết sản phẩm (Product Detail)
-![Product Detail Wireframe](./product-detail.png)
-
-**Mô tả:** Gallery ảnh sản phẩm, thông tin giá/giảm giá, đánh giá sao, chọn số lượng, nút mua hàng, tabs (mô tả, thông số, đánh giá), sản phẩm liên quan.
-
----
-
-### 4. Giỏ hàng (Cart)
-![Cart Wireframe](./cart.png)
-
-**Mô tả:** Danh sách sản phẩm trong giỏ, điều chỉnh số lượng, tóm tắt đơn hàng, mã giảm giá, nút thanh toán. Trạng thái giỏ trống.
-
----
-
-### 5. Build PC (Cấu hình máy tính)
-![Build PC Wireframe](./build-pc.png)
-
-**Mô tả:** 8 slot linh kiện (CPU, GPU, Mainboard, RAM, SSD, PSU, Case, Tản nhiệt), dropdown chọn sản phẩm, bảng tóm tắt cấu hình, kiểm tra tương thích, thanh công suất.
-
----
-
-### 6. Đăng nhập / Đăng ký (Auth)
-![Auth Wireframe](./auth.png)
-
-**Mô tả:** Form glassmorphism với logo, email/password inputs, toggle hiện mật khẩu, nút đăng nhập/đăng ký gradient, social login (Google, Facebook), chuyển đổi login/register.
+| # | Trang | File | Mô tả |
+|---|-------|------|-------|
+| 1 | [Trang chủ](./01-homepage.md) | `src/app/page.tsx` | Hero, categories, flash sale, featured |
+| 2 | [Danh sách SP](./02-product-listing.md) | `src/app/products/page.tsx` | Sidebar filters, grid, sort, pagination |
+| 3 | [Chi tiết SP](./03-product-detail.md) | `src/app/products/[slug]/page.tsx` | Gallery, price, tabs, reviews, related |
+| 4 | [Giỏ hàng](./04-cart.md) | `src/app/cart/page.tsx` | Items, discount, summary, slide-out |
+| 5 | [Tìm kiếm](./05-search.md) | `src/app/search/page.tsx` | Search bar, tags, results, empty |
+| 6 | [Build PC](./06-build-pc.md) | `src/app/build-pc/page.tsx` | 8 slots, picker, summary, compatibility |
+| 7 | [Đăng nhập](./07-auth.md) | `src/app/auth/page.tsx` | Login/Register, social, password toggle |
 
 ---
 
@@ -56,3 +29,10 @@ Tài liệu wireframe cho các trang chính của website CyberGravity.
 | **Buttons** | Gradient primary, ghost secondary |
 | **Typography** | Outfit (headings), Inter (body) |
 | **Animations** | Framer Motion hover/enter effects |
+
+---
+
+## Hình ảnh tham chiếu
+
+Các file `.png` trong thư mục này là bản wireframe dạng hình ảnh, dùng để tham chiếu bổ sung.  
+**Nguồn chính là các file `.md`** — dễ chỉnh sửa, version control, và AI đọc được.
