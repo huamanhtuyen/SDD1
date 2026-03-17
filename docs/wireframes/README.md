@@ -1,14 +1,58 @@
-# CyberGravity — Wireframes Index
+# CyberGravity — Wireframes
 
-> Các wireframe dưới đây minh họa cho giao diện 8 trang chính của website CyberGravity.
+Tài liệu wireframe cho các trang chính của website CyberGravity.
 
-| # | Trang | File | Mô tả |
-|---|-------|------|-------|
-| 1 | Trang chủ | [01-homepage.png](./01-homepage.png) | Hero banner, danh mục, SP nổi bật, flash sale |
-| 2 | Danh mục SP | [02-product-listing.png](./02-product-listing.png) | Filter sidebar, product grid, sort, pagination |
-| 3 | Chi tiết SP | [03-product-detail.png](./03-product-detail.png) | Gallery, thông tin SP, tabs, SP liên quan |
-| 4 | Giỏ hàng | [04-cart.png](./04-cart.png) | Cart table, order summary, slide-out panel |
-| 5 | AI Chat | [05-ai-chat.png](./05-ai-chat.png) | Chat widget, conversation, suggestions |
-| 6 | Tìm kiếm | [06-search.png](./06-search.png) | Instant search, results, history |
-| 7 | Build PC | [07-build-pc.png](./07-build-pc.png) | Component slots, build summary, compatibility |
-| 8 | Auth | [08-auth.png](./08-auth.png) | Login/register modal, social login |
+## Danh sách Wireframes
+
+### 1. Trang chủ (Homepage)
+![Homepage Wireframe](./homepage.png)
+
+**Mô tả:** Hero banner, danh mục sản phẩm (8 categories), Flash Sale với countdown, sản phẩm nổi bật, banner Build PC, footer.
+
+---
+
+### 2. Danh sách sản phẩm (Product Listing)
+![Product Listing Wireframe](./products.png)
+
+**Mô tả:** Sidebar bộ lọc (danh mục, khoảng giá, thương hiệu, đánh giá), lưới sản phẩm 3 cột, sắp xếp, phân trang, breadcrumb.
+
+---
+
+### 3. Chi tiết sản phẩm (Product Detail)
+![Product Detail Wireframe](./product-detail.png)
+
+**Mô tả:** Gallery ảnh sản phẩm, thông tin giá/giảm giá, đánh giá sao, chọn số lượng, nút mua hàng, tabs (mô tả, thông số, đánh giá), sản phẩm liên quan.
+
+---
+
+### 4. Giỏ hàng (Cart)
+![Cart Wireframe](./cart.png)
+
+**Mô tả:** Danh sách sản phẩm trong giỏ, điều chỉnh số lượng, tóm tắt đơn hàng, mã giảm giá, nút thanh toán. Trạng thái giỏ trống.
+
+---
+
+### 5. Build PC (Cấu hình máy tính)
+![Build PC Wireframe](./build-pc.png)
+
+**Mô tả:** 8 slot linh kiện (CPU, GPU, Mainboard, RAM, SSD, PSU, Case, Tản nhiệt), dropdown chọn sản phẩm, bảng tóm tắt cấu hình, kiểm tra tương thích, thanh công suất.
+
+---
+
+### 6. Đăng nhập / Đăng ký (Auth)
+![Auth Wireframe](./auth.png)
+
+**Mô tả:** Form glassmorphism với logo, email/password inputs, toggle hiện mật khẩu, nút đăng nhập/đăng ký gradient, social login (Google, Facebook), chuyển đổi login/register.
+
+---
+
+## Quy ước thiết kế
+
+| Yếu tố | Mô tả |
+|---------|-------|
+| **Theme** | Dark mode (#0a0a0f background) |
+| **Accent** | Purple gradient (#8b5cf6 → #06b6d4) |
+| **Cards** | Glassmorphism (backdrop-blur, border white/10) |
+| **Buttons** | Gradient primary, ghost secondary |
+| **Typography** | Outfit (headings), Inter (body) |
+| **Animations** | Framer Motion hover/enter effects |
