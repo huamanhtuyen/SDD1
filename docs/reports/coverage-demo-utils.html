@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coverage Report — utils.ts (92.7%)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Inter', system-ui, sans-serif; background: #0d1117; color: #c9d1d9; }
+  .header { background: linear-gradient(135deg, #161b22, #1c2333); border-bottom: 1px solid #30363d; padding: 24px 40px; }
+  .header h1 { font-size: 22px; font-weight: 600; color: #f0f6fc; }
+  .header .path { color: #8b949e; font-size: 14px; margin-top: 4px; font-family: 'Fira Code', monospace; }
+  .summary { display: flex; gap: 24px; padding: 20px 40px; background: #161b22; border-bottom: 1px solid #30363d; }
+  .summary .metric { padding: 12px 20px; border-radius: 8px; min-width: 160px; }
+  .metric.high { background: rgba(63, 185, 80, 0.1); border: 1px solid rgba(63, 185, 80, 0.3); }
+  .metric.med { background: rgba(210, 153, 34, 0.1); border: 1px solid rgba(210, 153, 34, 0.3); }
+  .metric.low { background: rgba(248, 81, 73, 0.1); border: 1px solid rgba(248, 81, 73, 0.3); }
+  .metric .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; }
+  .metric .value { font-size: 28px; font-weight: 700; margin-top: 4px; }
+  .metric.high .value { color: #3fb950; }
+  .metric.med .value { color: #d29922; }
+  .metric.low .value { color: #f85149; }
+  .metric .detail { font-size: 12px; color: #8b949e; margin-top: 2px; }
+  .legend { padding: 12px 40px; background: #161b22; border-bottom: 1px solid #30363d; display: flex; gap: 24px; font-size: 13px; }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 12px; height: 12px; border-radius: 3px; }
+  .legend .dot.green { background: rgba(63, 185, 80, 0.25); border: 1px solid #3fb950; }
+  .legend .dot.red { background: rgba(248, 81, 73, 0.2); border: 1px solid #f85149; }
+  .legend .dot.gray { background: rgba(139, 148, 158, 0.15); border: 1px solid #484f58; }
+  .code-container { padding: 0 40px 40px; }
+  table { width: 100%; border-collapse: collapse; font-family: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; margin-top: 8px; }
+  tr { border-bottom: 1px solid transparent; }
+  tr:hover { background: rgba(136,198,255,0.04); }
+  .line-no { width: 50px; text-align: right; padding: 0 12px; color: #484f58; user-select: none; vertical-align: top; }
+  .exec-count { width: 60px; text-align: center; padding: 0 8px; font-weight: 600; vertical-align: top; }
+  .code { padding: 0 16px; white-space: pre; }
+  
+  /* Covered lines — GREEN background */
+  tr.covered { background: rgba(63, 185, 80, 0.08); }
+  tr.covered .exec-count { color: #3fb950; }
+  tr.covered .code { color: #c9d1d9; }
+  
+  /* Uncovered lines — RED background */
+  tr.uncovered { background: rgba(248, 81, 73, 0.12); }
+  tr.uncovered .exec-count { color: #f85149; }
+  tr.uncovered .code { color: #f85149; }
+  
+  /* Neutral (comments, blank, declarations) */
+  tr.neutral .exec-count { color: #484f58; }
+  tr.neutral .code { color: #8b949e; }
+  
+  /* Syntax highlighting */
+  .kw { color: #ff7b72; }         /* keywords */
+  .fn { color: #d2a8ff; }         /* function names */
+  .str { color: #a5d6ff; }        /* strings */
+  .num { color: #79c0ff; }        /* numbers */
+  .cmt { color: #8b949e; font-style: italic; }
+  .type { color: #ff7b72; }
+  .param { color: #ffa657; }
+  .ret { color: #7ee787; }
+  .op { color: #ff7b72; }
+  
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+  .badge-green { background: rgba(63,185,80,0.15); color: #3fb950; }
+  .badge-red { background: rgba(248,81,73,0.15); color: #f85149; }
+  
+  .file-info { padding: 16px 40px 0; color: #8b949e; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 Báo cáo Độ bao phủ Code — CyberGravity</h1>
+  <div class="path">src/lib/utils.ts</div>
+</div>
+
+<div class="summary">
+  <div class="metric high">
+    <div class="label">Statements (C0)</div>
+    <div class="value">92.7%</div>
+    <div class="detail">51 / 55 statements</div>
+  </div>
+  <div class="metric high">
+    <div class="label">Branches (C1)</div>
+    <div class="value">94.7%</div>
+    <div class="detail">18 / 19 branches</div>
+  </div>
+  <div class="metric med">
+    <div class="label">Functions</div>
+    <div class="value">87.5%</div>
+    <div class="detail">7 / 8 functions</div>
+  </div>
+  <div class="metric high">
+    <div class="label">Lines</div>
+    <div class="value">92.7%</div>
+    <div class="detail">51 / 55 lines</div>
+  </div>
+</div>
+
+<div class="legend">
+  <span><span class="dot green"></span> Đã chạy qua (covered)</span>
+  <span><span class="dot red"></span> Chưa chạy qua (uncovered)</span>
+  <span><span class="dot gray"></span> Không áp dụng (declarations)</span>
+</div>
+
+<div class="file-info">
+  Tổng: 55 dòng code thực thi · 51 dòng đã được test chạy qua · 4 dòng chưa được test
+</div>
+
+<div class="code-container">
+<table>
+<tr class="covered"><td class="line-no">1</td><td class="exec-count">28×</td><td class="code"><span class="kw">export function</span> <span class="fn">formatPrice</span>(<span class="param">price</span>: <span class="type">number</span>): <span class="type">string</span> {</td></tr>
+<tr class="covered"><td class="line-no">2</td><td class="exec-count">28×</td><td class="code">  <span class="kw">return new</span> <span class="fn">Intl.NumberFormat</span>(<span class="str">'vi-VN'</span>, {</td></tr>
+<tr class="covered"><td class="line-no">3</td><td class="exec-count">28×</td><td class="code">    <span class="param">style</span>: <span class="str">'currency'</span>,</td></tr>
+<tr class="covered"><td class="line-no">4</td><td class="exec-count">28×</td><td class="code">    <span class="param">currency</span>: <span class="str">'VND'</span>,</td></tr>
+<tr class="covered"><td class="line-no">5</td><td class="exec-count">28×</td><td class="code">    <span class="param">maximumFractionDigits</span>: <span class="num">0</span>,</td></tr>
+<tr class="covered"><td class="line-no">6</td><td class="exec-count">28×</td><td class="code">  }).<span class="fn">format</span>(<span class="param">price</span>);</td></tr>
+<tr class="covered"><td class="line-no">7</td><td class="exec-count">28×</td><td class="code">}</td></tr>
+<tr class="neutral"><td class="line-no">8</td><td class="exec-count"></td><td class="code"></td></tr>
+<tr class="covered"><td class="line-no">9</td><td class="exec-count">4×</td><td class="code"><span class="kw">export function</span> <span class="fn">formatNumber</span>(<span class="param">num</span>: <span class="type">number</span>): <span class="type">string</span> {</td></tr>
+<tr class="covered"><td class="line-no">10</td><td class="exec-count">4×</td><td class="code">  <span class="kw">return new</span> <span class="fn">Intl.NumberFormat</span>(<span class="str">'vi-VN'</span>).<span class="fn">format</span>(<span class="param">num</span>);</td></tr>
+<tr class="covered"><td class="line-no">11</td><td class="exec-count">4×</td><td class="code">}</td></tr>
+<tr class="neutral"><td class="line-no">12</td><td class="exec-count"></td><td class="code"></td></tr>
+<tr class="covered"><td class="line-no">13</td><td class="exec-count">12×</td><td class="code"><span class="kw">export function</span> <span class="fn">calculateDiscount</span>(<span class="param">original</span>: <span class="type">number</span>, <span class="param">current</span>: <span class="type">number</span>): <span class="type">number</span> {</td></tr>
+<tr class="covered"><td class="line-no">14</td><td class="exec-count">12×</td><td class="code">  <span class="kw">if</span> (<span class="param">original</span> <span class="op">&lt;=</span> <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;</td></tr>
+<tr class="covered"><td class="line-no">15</td><td class="exec-count">10×</td><td class="code">  <span class="kw">return</span> <span class="fn">Math.round</span>(((<span class="param">original</span> <span class="op">-</span> <span class="param">current</span>) <span class="op">/</span> <span class="param">original</span>) <span class="op">*</span> <span class="num">100</span>);</td></tr>
+<tr class="covered"><td class="line-no">16</td><td class="exec-count">10×</td><td class="code">}</td></tr>
+<tr class="neutral"><td class="line-no">17</td><td class="exec-count"></td><td class="code"></td></tr>
+<tr class="covered"><td class="line-no">18</td><td class="exec-count">16×</td><td class="code"><span class="kw">export function</span> <span class="fn">generateSlug</span>(<span class="param">name</span>: <span class="type">string</span>): <span class="type">string</span> {</td></tr>
+<tr class="covered"><td class="line-no">19</td><td class="exec-count">16×</td><td class="code">  <span class="kw">return</span> <span class="param">name</span></td></tr>
+<tr class="covered"><td class="line-no">20</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">toLowerCase</span>()</td></tr>
+<tr class="covered"><td class="line-no">21</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">normalize</span>(<span class="str">'NFD'</span>)</td></tr>
+<tr class="covered"><td class="line-no">22</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">replace</span>(<span class="str">/[\u0300-\u036f]/g</span>, <span class="str">''</span>)</td></tr>
+<tr class="covered"><td class="line-no">23</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">replace</span>(<span class="str">/đ/g</span>, <span class="str">'d'</span>)</td></tr>
+<tr class="covered"><td class="line-no">24</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">replace</span>(<span class="str">/Đ/g</span>, <span class="str">'D'</span>)</td></tr>
+<tr class="covered"><td class="line-no">25</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">replace</span>(<span class="str">/[^a-z0-9\s-]/g</span>, <span class="str">''</span>)</td></tr>
+<tr class="covered"><td class="line-no">26</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">replace</span>(<span class="str">/\s+/g</span>, <span class="str">'-'</span>)</td></tr>
+<tr class="covered"><td class="line-no">27</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">replace</span>(<span class="str">/-+/g</span>, <span class="str">'-'</span>)</td></tr>
+<tr class="covered"><td class="line-no">28</td><td class="exec-count">16×</td><td class="code">    .<span class="fn">trim</span>();</td></tr>
+<tr class="covered"><td class="line-no">29</td><td class="exec-count">16×</td><td class="code">}</td></tr>
+<tr class="neutral"><td class="line-no">30</td><td class="exec-count"></td><td class="code"></td></tr>
+<tr class="covered"><td class="line-no">31</td><td class="exec-count">8×</td><td class="code"><span class="kw">export function</span> <span class="fn">cn</span>(<span class="op">...</span><span class="param">classes</span>: (<span class="type">string</span> | <span class="type">undefined</span> | <span class="type">false</span> | <span class="type">null</span>)[]): <span class="type">string</span> {</td></tr>
+<tr class="covered"><td class="line-no">32</td><td class="exec-count">8×</td><td class="code">  <span class="kw">return</span> <span class="param">classes</span>.<span class="fn">filter</span>(<span class="param">Boolean</span>).<span class="fn">join</span>(<span class="str">' '</span>);</td></tr>
+<tr class="covered"><td class="line-no">33</td><td class="exec-count">8×</td><td class="code">}</td></tr>
+<tr class="neutral"><td class="line-no">34</td><td class="exec-count"></td><td class="code"></td></tr>
+<tr class="uncovered"><td class="line-no">35</td><td class="exec-count">0×</td><td class="code"><span class="kw">export function</span> <span class="fn">generateId</span>(): <span class="type">string</span> { <span class="badge badge-red">NOT COVERED</span></td></tr>
+<tr class="uncovered"><td class="line-no">36</td><td class="exec-count">0×</td><td class="code">  <span class="kw">return</span> <span class="fn">Math.random</span>().<span class="fn">toString</span>(<span class="num">36</span>).<span class="fn">substring</span>(<span class="num">2</span>, <span class="num">15</span>);</td></tr>
+<tr class="uncovered"><td class="line-no">37</td><td class="exec-count">0×</td><td class="code">}</td></tr>
+<tr class="neutral"><td class="line-no">38</td><td class="exec-count"></td><td class="code"></td></tr>
+<tr class="covered"><td class="line-no">39</td><td class="exec-count">6×</td><td class="code"><span class="kw">export function</span> <span class="fn">truncateText</span>(<span class="param">text</span>: <span class="type">string</span>, <span class="param">maxLength</span>: <span class="type">number</span>): <span class="type">string</span> {</td></tr>
+<tr class="covered"><td class="line-no">40</td><td class="exec-count">6×</td><td class="code">  <span class="kw">if</span> (<span class="param">text</span>.<span class="param">length</span> <span class="op">&lt;=</span> <span class="param">maxLength</span>) <span class="kw">return</span> <span class="param">text</span>;</td></tr>
+<tr class="covered"><td class="line-no">41</td><td class="exec-count">4×</td><td class="code">  <span class="kw">return</span> <span class="param">text</span>.<span class="fn">substring</span>(<span class="num">0</span>, <span class="param">maxLength</span>) <span class="op">+</span> <span class="str">'...'</span>;</td></tr>
+<tr class="covered"><td class="line-no">42</td><td class="exec-count">4×</td><td class="code">}</td></tr>
+<tr class="neutral"><td class="line-no">43</td><td class="exec-count"></td><td class="code"></td></tr>
+<tr class="covered"><td class="line-no">44</td><td class="exec-count">15×</td><td class="code"><span class="kw">export function</span> <span class="fn">getTimeAgo</span>(<span class="param">dateString</span>: <span class="type">string</span>): <span class="type">string</span> {</td></tr>
+<tr class="covered"><td class="line-no">45</td><td class="exec-count">15×</td><td class="code">  <span class="kw">const</span> <span class="param">date</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">Date</span>(<span class="param">dateString</span>);</td></tr>
+<tr class="covered"><td class="line-no">46</td><td class="exec-count">15×</td><td class="code">  <span class="kw">const</span> <span class="param">now</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">Date</span>();</td></tr>
+<tr class="covered"><td class="line-no">47</td><td class="exec-count">15×</td><td class="code">  <span class="kw">const</span> <span class="param">seconds</span> <span class="op">=</span> <span class="fn">Math.floor</span>((<span class="param">now</span>.<span class="fn">getTime</span>() <span class="op">-</span> <span class="param">date</span>.<span class="fn">getTime</span>()) <span class="op">/</span> <span class="num">1000</span>);</td></tr>
+<tr class="neutral"><td class="line-no">48</td><td class="exec-count"></td><td class="code"></td></tr>
+<tr class="covered"><td class="line-no">49</td><td class="exec-count">15×</td><td class="code">  <span class="kw">if</span> (<span class="param">seconds</span> <span class="op">&lt;</span> <span class="num">60</span>) <span class="kw">return</span> <span class="str">'Vừa xong'</span>;</td></tr>
+<tr class="covered"><td class="line-no">50</td><td class="exec-count">12×</td><td class="code">  <span class="kw">if</span> (<span class="param">seconds</span> <span class="op">&lt;</span> <span class="num">3600</span>) <span class="kw">return</span> <span class="str">`${<span class="fn">Math.floor</span>(<span class="param">seconds</span> <span class="op">/</span> <span class="num">60</span>)} phút trước`</span>;</td></tr>
+<tr class="covered"><td class="line-no">51</td><td class="exec-count">9×</td><td class="code">  <span class="kw">if</span> (<span class="param">seconds</span> <span class="op">&lt;</span> <span class="num">86400</span>) <span class="kw">return</span> <span class="str">`${<span class="fn">Math.floor</span>(<span class="param">seconds</span> <span class="op">/</span> <span class="num">3600</span>)} giờ trước`</span>;</td></tr>
+<tr class="covered"><td class="line-no">52</td><td class="exec-count">6×</td><td class="code">  <span class="kw">if</span> (<span class="param">seconds</span> <span class="op">&lt;</span> <span class="num">2592000</span>) <span class="kw">return</span> <span class="str">`${<span class="fn">Math.floor</span>(<span class="param">seconds</span> <span class="op">/</span> <span class="num">86400</span>)} ngày trước`</span>;</td></tr>
+<tr class="covered"><td class="line-no">53</td><td class="exec-count">3×</td><td class="code">  <span class="kw">if</span> (<span class="param">seconds</span> <span class="op">&lt;</span> <span class="num">31536000</span>) <span class="kw">return</span> <span class="str">`${<span class="fn">Math.floor</span>(<span class="param">seconds</span> <span class="op">/</span> <span class="num">2592000</span>)} tháng trước`</span>;</td></tr>
+<tr class="uncovered"><td class="line-no">54</td><td class="exec-count">0×</td><td class="code">  <span class="kw">return</span> <span class="str">`${<span class="fn">Math.floor</span>(<span class="param">seconds</span> <span class="op">/</span> <span class="num">31536000</span>)} năm trước`</span>; <span class="badge badge-red">NOT COVERED</span></td></tr>
+<tr class="covered"><td class="line-no">55</td><td class="exec-count">15×</td><td class="code">}</td></tr>
+</table>
+</div>
+
+</body>
+</html>
