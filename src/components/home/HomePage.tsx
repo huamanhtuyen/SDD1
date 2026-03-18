@@ -186,9 +186,9 @@ export default function HomePage() {
                     <p className="text-xs text-text-tertiary line-through">{formatPrice(product.originalPrice)}</p>
                   </div>
                   <div className="w-full h-1.5 rounded-full bg-error/20">
-                    <div className="h-full rounded-full bg-gradient-to-r from-error to-warning" style={{ width: `${Math.floor(Math.random() * 40 + 50)}%` }} />
+                    <div className="h-full rounded-full bg-gradient-to-r from-error to-warning" style={{ width: `${(product.price % 40) + 50}%` }} />
                   </div>
-                  <p className="text-[10px] text-text-tertiary">Đã bán {Math.floor(Math.random() * 200 + 50)}</p>
+                  <p className="text-[10px] text-text-tertiary">Đã bán {(product.price % 200) + 50}</p>
                 </div>
               ))}
             </div>
