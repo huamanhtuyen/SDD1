@@ -105,7 +105,7 @@ export default function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="container-page py-20">
+      <section className="container-page py-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,7 +118,7 @@ export default function HomePage() {
           <p className="text-text-secondary">Khám phá hàng nghìn sản phẩm công nghệ chính hãng</p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
           {categories.map((cat, i) => {
             const Icon = iconMap[cat.icon] || Cpu;
             return (
@@ -145,8 +145,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Section Divider — NFR-12 */}
+      <div className="container-page"><div className="h-px bg-gradient-to-r from-transparent via-accent-primary/20 to-transparent" /></div>
+
       {/* Flash Sale */}
-      <section className="container-page py-20">
+      <section className="container-page py-32">
         <div className="glass-card p-8 md:p-10 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-error/5 via-transparent to-accent-primary/5" />
           <div className="relative">
@@ -171,9 +174,9 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
               {flashSale.map((product, i) => (
-                <div key={product.id} className="product-card p-3 space-y-2">
+                <div key={product.id} className="product-card p-4 space-y-3">
                   <div className="aspect-square rounded-lg bg-bg-tertiary/30 flex items-center justify-center">
                     <span className="text-3xl opacity-30">📦</span>
                   </div>
@@ -193,50 +196,59 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Section Divider — NFR-12 */}
+      <div className="container-page"><div className="h-px bg-gradient-to-r from-transparent via-accent-primary/20 to-transparent" /></div>
+
       {/* Featured Products */}
-      <section className="container-page py-20">
-        <div className="flex items-center justify-between mb-8">
+      <section className="container-page py-32">
+        <div className="flex items-center justify-between mb-10">
           <div>
             <h2 className="text-2xl md:text-3xl font-heading font-bold">
               Sản phẩm <span className="gradient-text">nổi bật</span>
             </h2>
-            <p className="text-sm text-text-secondary mt-1">Được khách hàng yêu thích nhất</p>
+            <p className="text-sm text-text-secondary mt-2 leading-relaxed">Được khách hàng yêu thích nhất</p>
           </div>
           <Link href="/products" className="flex items-center gap-1 text-sm text-accent-primary hover:text-accent-secondary transition-colors">
             Xem tất cả <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
           {featured.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
           ))}
         </div>
       </section>
 
+      {/* Section Divider — NFR-12 */}
+      <div className="container-page"><div className="h-px bg-gradient-to-r from-transparent via-accent-secondary/20 to-transparent" /></div>
+
       {/* New Products */}
-      <section className="container-page py-20">
-        <div className="flex items-center justify-between mb-8">
+      <section className="container-page py-32">
+        <div className="flex items-center justify-between mb-10">
           <div>
             <h2 className="text-2xl md:text-3xl font-heading font-bold">
               Sản phẩm <span className="gradient-text-purple">mới nhất</span>
             </h2>
-            <p className="text-sm text-text-secondary mt-1">Vừa cập nhật trong tuần</p>
+            <p className="text-sm text-text-secondary mt-2 leading-relaxed">Vừa cập nhật trong tuần</p>
           </div>
           <Link href="/products?sort=newest" className="flex items-center gap-1 text-sm text-accent-primary hover:text-accent-secondary transition-colors">
             Xem tất cả <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
           {newProducts.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
           ))}
         </div>
       </section>
 
+      {/* Section Divider — NFR-12 */}
+      <div className="container-page"><div className="h-px bg-gradient-to-r from-transparent via-accent-primary/20 to-transparent" /></div>
+
       {/* Banner */}
-      <section className="container-page py-16">
+      <section className="container-page py-32">
         <div className="glass-card p-8 md:p-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-accent-primary/10 to-accent-tertiary/10" />
           <div className="absolute top-0 right-0 w-96 h-96 bg-accent-primary/5 rounded-full blur-[100px]" />

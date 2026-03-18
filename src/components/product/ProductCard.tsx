@@ -50,7 +50,7 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
       </Link>
 
       {/* Info */}
-      <div className="p-4 space-y-2">
+      <div className="p-5 space-y-3">
         <Link href={`/products/${product.slug}`}>
           <p className="text-xs text-accent-primary font-medium">{product.brand}</p>
           <h3 className="text-sm font-medium text-text-primary line-clamp-2 mt-1 group-hover:text-accent-primary transition-colors leading-snug min-h-[2.5rem]">
@@ -94,7 +94,7 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
         <button
           onClick={() => addItem(product, 1)}
           disabled={product.stock === 0}
-          className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-accent-primary to-accent-secondary text-white text-sm font-semibold hover:shadow-lg hover:shadow-accent-primary/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5"
+          className="w-full mt-3 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-accent-primary to-accent-secondary text-white text-sm font-semibold hover:shadow-lg hover:shadow-accent-primary/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5"
         >
           <ShoppingCart className="w-4 h-4" />
           <span>{product.stock > 0 ? 'Thêm vào giỏ' : 'Hết hàng'}</span>

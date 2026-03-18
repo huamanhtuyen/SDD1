@@ -1,6 +1,6 @@
 # CyberGravity — Software Requirements Specification (SRS)
 
-> **Phiên bản:** 1.1  
+> **Phiên bản:** 1.2  
 > **Ngày tạo:** 2026-03-17  
 > **Ngày cập nhật:** 2026-03-18  
 > **Tác giả:** CyberGravity Development Team  
@@ -12,6 +12,7 @@
 |-----------|------|------------------|
 | 1.0 | 2026-03-17 | Tạo mới — Đặc tả đầy đủ 8 module chức năng |
 | 1.1 | 2026-03-18 | Bổ sung NFR-08, NFR-09 (yêu cầu UI spacing/padding) |
+| 1.2 | 2026-03-18 | Nâng cấp spacing: NFR-08 tăng section gap, thêm NFR-10/11/12 cho internal component padding và text spacing |
 
 ---
 
@@ -198,8 +199,11 @@ CyberGravity là website thương mại điện tử với:
 | NFR-05 | **Accessibility** | Semantic HTML, alt text cho ảnh |
 | NFR-06 | **SEO** | Title, meta description, heading hierarchy |
 | NFR-07 | **Theme** | Dark mode mặc định, neon accent (indigo/violet/cyan) |
-| NFR-08 | **Spacing** | Container padding tối thiểu 24px (mobile), 32px (tablet), 48px (desktop). Các section cách nhau tối thiểu 80px (py-20). Nội dung không được sát lề trình duyệt |
+| NFR-08 | **Spacing** | Container padding tối thiểu 24px (mobile), 32px (tablet), 48px (desktop). Các section cách nhau tối thiểu **120px** (py-28 hoặc py-32). Nội dung không được sát lề trình duyệt |
 | NFR-09 | **Gap** | Khoảng cách giữa các phần tử trong grid/flex tối thiểu 24px (gap-6). Product card grid tối thiểu gap-6 |
+| NFR-10 | **Card Padding** | Internal padding của product card tối thiểu 20px (p-5). Flash sale card tối thiểu 16px (p-4). Category card tối thiểu 24px (p-6). Khoảng cách nội dung bên trong card (space-y) tối thiểu 12px (space-y-3) |
+| NFR-11 | **Typo Spacing** | Subtitle cách heading tối thiểu 8px (mt-2). Section heading cách nội dung tối thiểu 32px (mb-8). Text line-height cho mô tả tối thiểu 1.6 |
+| NFR-12 | **Section Dividers** | Giữa các section chính cần có visual separator (gradient divider hoặc khoảng trống tối thiểu 120px) để tạo không gian thở giữa các khối nội dung |
 
 ---
 

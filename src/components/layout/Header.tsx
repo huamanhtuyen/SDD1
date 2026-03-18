@@ -111,13 +111,13 @@ export default function Header() {
         </div>
 
         {/* Category nav */}
-        <nav className="hidden lg:block container-page pb-2">
-          <div className="flex items-center gap-1">
+        <nav className="hidden lg:block container-page pb-3">
+          <div className="flex items-center gap-2">
             {navCategories.map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/products?category=${cat.slug}`}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-white/5 transition-all group"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-white/5 transition-all group"
               >
                 <cat.icon className="w-4 h-4 text-text-tertiary group-hover:text-accent-primary transition-colors" />
                 <span>{cat.name}</span>

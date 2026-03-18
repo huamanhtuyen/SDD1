@@ -3,8 +3,8 @@ import { Cpu, Mail, Phone, MapPin, Facebook, Youtube, Instagram } from 'lucide-r
 
 export default function Footer() {
   return (
-    <footer className="bg-bg-secondary/50 border-t border-white/5 mt-20">
-      <div className="container-page py-12">
+    <footer className="bg-bg-secondary/50 border-t border-white/5 mt-32">
+      <div className="container-page py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
