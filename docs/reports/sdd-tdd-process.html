@@ -107,6 +107,15 @@ tr:hover td{background:rgba(136,198,255,0.04)}
 .comparison .col-old .col-title{color:#f85149}
 .comparison .col-new .col-title{color:#3fb950}
 
+/* Author Banner */
+.author-banner{background:linear-gradient(135deg,#0d1117 0%,#1a1040 50%,#0d1117 100%);padding:18px 0;text-align:center;border-bottom:1px solid rgba(139,92,246,0.2);position:relative;overflow:hidden}
+.author-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(139,92,246,0.05),transparent);animation:authorShimmer 4s ease-in-out infinite}
+@keyframes authorShimmer{0%,100%{opacity:0.3}50%{opacity:1}}
+.author-banner .author-label{font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#8b949e;margin-bottom:4px;font-weight:500}
+.author-banner .author-name{font-size:20px;font-weight:700;background:linear-gradient(135deg,#c084fc,#8b5cf6,#06b6d4,#22d3ee);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:authorGradient 5s ease infinite;letter-spacing:1px;text-shadow:0 0 40px rgba(139,92,246,0.3)}
+@keyframes authorGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.author-banner .author-title{font-size:12px;color:#6e7681;margin-top:2px}
+
 /* Footer */
 .footer{padding:40px 0;text-align:center;color:#484f58;font-size:13px;border-top:1px solid #21262d;margin-top:40px}
 
@@ -129,6 +138,15 @@ strong{color:#f0f6fc}
 </style>
 </head>
 <body>
+
+<!-- ==================== AUTHOR ==================== -->
+<div class="author-banner">
+  <div class="container">
+    <div class="author-label">✍️ Tác giả tài liệu</div>
+    <div class="author-name">Hứa Mạnh Tuyển</div>
+    <div class="author-title">Software Architect · CyberGravity Team</div>
+  </div>
+</div>
 
 <!-- ==================== HERO ==================== -->
 <div class="hero">
