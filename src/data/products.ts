@@ -293,6 +293,54 @@ const categoryMap: Record<string, string> = {
   'apple-watch': 'Đồng hồ thông minh', 'galaxy-watch': 'Đồng hồ thông minh', garmin: 'Đồng hồ thông minh', 'xiaomi-watch': 'Đồng hồ thông minh',
 };
 
+// Curated Unsplash photo IDs for each subcategory (real product photos)
+const subcategoryImages: Record<string, string[]> = {
+  cpu: ['CKlHKtCJZKk', 'iRHVKrCMfMo', '5cFwQ-WMcJU', 'p0yKNFG2MJE', 'FO7JIlwjOtU'],
+  vga: ['FxU8KV7psMY', 'IYMaOo0f728', 'RCAhiGJsUUE', '9J7sHieGFhk', 'XSKRDuORkPU'],
+  ram: ['JFGMxRAx-Q4', 'iRHVKrCMfMo', 'p0yKNFG2MJE', '5cFwQ-WMcJU', 'FO7JIlwjOtU'],
+  'ssd-hdd': ['sajhYgkMiVA', '1SAnrIxw5OY', 'FO7JIlwjOtU', 'iRHVKrCMfMo', 'p0yKNFG2MJE'],
+  mainboard: ['FO7JIlwjOtU', 'CKlHKtCJZKk', '5cFwQ-WMcJU', 'iRHVKrCMfMo', 'p0yKNFG2MJE'],
+  psu: ['FO7JIlwjOtU', 'CKlHKtCJZKk', 'p0yKNFG2MJE', '5cFwQ-WMcJU', 'iRHVKrCMfMo'],
+  'case': ['a-CU46sAYkI', 'FxU8KV7psMY', 'FO7JIlwjOtU', 'IYMaOo0f728', '5cFwQ-WMcJU'],
+  'tan-nhiet': ['FO7JIlwjOtU', 'FxU8KV7psMY', 'CKlHKtCJZKk', 'p0yKNFG2MJE', '5cFwQ-WMcJU'],
+  'laptop-gaming': ['XMFZqrGyV-Q', 'jLwVAUtLOAQ', 'C5SUkYZT7nU', '95YRwf6CNw8', 'Im7lZjxeLhg'],
+  'laptop-van-phong': ['jLwVAUtLOAQ', 'XMFZqrGyV-Q', 'C5SUkYZT7nU', '95YRwf6CNw8', 'Im7lZjxeLhg'],
+  ultrabook: ['C5SUkYZT7nU', 'jLwVAUtLOAQ', 'XMFZqrGyV-Q', '95YRwf6CNw8', 'Im7lZjxeLhg'],
+  'laptop-workstation': ['95YRwf6CNw8', 'jLwVAUtLOAQ', 'XMFZqrGyV-Q', 'C5SUkYZT7nU', 'Im7lZjxeLhg'],
+  iphone: ['FY8d721UO1Q', 'TkrRvwxjb_8', 'MgWKqGRXMKQ', 'jf1EomjlQi0', '1VhKRBMet-4'],
+  samsung: ['TkrRvwxjb_8', 'jf1EomjlQi0', 'FY8d721UO1Q', 'MgWKqGRXMKQ', '1VhKRBMet-4'],
+  xiaomi: ['jf1EomjlQi0', 'TkrRvwxjb_8', 'FY8d721UO1Q', 'MgWKqGRXMKQ', '1VhKRBMet-4'],
+  oppo: ['MgWKqGRXMKQ', 'jf1EomjlQi0', 'TkrRvwxjb_8', 'FY8d721UO1Q', '1VhKRBMet-4'],
+  vivo: ['1VhKRBMet-4', 'jf1EomjlQi0', 'TkrRvwxjb_8', 'FY8d721UO1Q', 'MgWKqGRXMKQ'],
+  'man-hinh-gaming': ['1Lf5Adh9SCg', 'Im7lZjxeLhg', 'weRQAg9ILiU', 'FPNnKfjcbNU', 'AxKqit2t51M'],
+  'man-hinh-4k': ['weRQAg9ILiU', '1Lf5Adh9SCg', 'Im7lZjxeLhg', 'FPNnKfjcbNU', 'AxKqit2t51M'],
+  'man-hinh-ultrawide': ['FPNnKfjcbNU', '1Lf5Adh9SCg', 'weRQAg9ILiU', 'Im7lZjxeLhg', 'AxKqit2t51M'],
+  'man-hinh-van-phong': ['AxKqit2t51M', '1Lf5Adh9SCg', 'weRQAg9ILiU', 'FPNnKfjcbNU', 'Im7lZjxeLhg'],
+  'chuot-gaming': ['Cz0ioGVupJQ', 'mp0bgaS_d1c', 'tRIsMBMT1Cw', 'n5mdf_YIKrk', 'TaNVT4hWqPA'],
+  'ban-phim-co': ['mp0bgaS_d1c', 'tRIsMBMT1Cw', 'Cz0ioGVupJQ', 'n5mdf_YIKrk', 'TaNVT4hWqPA'],
+  'tai-nghe': ['PDX_a_82obo', '3GZNPBLImWc', 'Jc9Jkg4VOMw', 'dhGFLj3rI0Q', 'cAtzHUz7Z8g'],
+  webcam: ['mp0bgaS_d1c', 'tRIsMBMT1Cw', 'Cz0ioGVupJQ', 'n5mdf_YIKrk', 'TaNVT4hWqPA'],
+  'lot-chuot': ['mp0bgaS_d1c', 'Cz0ioGVupJQ', 'tRIsMBMT1Cw', 'n5mdf_YIKrk', 'TaNVT4hWqPA'],
+  tv: ['yEm28JMQijc', 'Im7lZjxeLhg', 'FPNnKfjcbNU', 'AxKqit2t51M', 'weRQAg9ILiU'],
+  'loa-bluetooth': ['_j1JDzESFR8', 'dhGFLj3rI0Q', 'PDX_a_82obo', '3GZNPBLImWc', 'cAtzHUz7Z8g'],
+  'may-loc-khong-khi': ['mp0bgaS_d1c', 'weRQAg9ILiU', 'AxKqit2t51M', 'FPNnKfjcbNU', '1Lf5Adh9SCg'],
+  'quat-dien': ['weRQAg9ILiU', 'mp0bgaS_d1c', 'AxKqit2t51M', 'FPNnKfjcbNU', '1Lf5Adh9SCg'],
+  'router-wifi': ['mp0bgaS_d1c', 'FO7JIlwjOtU', 'n5mdf_YIKrk', 'tRIsMBMT1Cw', 'TaNVT4hWqPA'],
+  switch: ['FO7JIlwjOtU', 'mp0bgaS_d1c', 'n5mdf_YIKrk', 'tRIsMBMT1Cw', 'TaNVT4hWqPA'],
+  nas: ['1SAnrIxw5OY', 'sajhYgkMiVA', 'FO7JIlwjOtU', 'mp0bgaS_d1c', 'n5mdf_YIKrk'],
+  'access-point': ['mp0bgaS_d1c', 'FO7JIlwjOtU', 'tRIsMBMT1Cw', 'n5mdf_YIKrk', 'TaNVT4hWqPA'],
+  'apple-watch': ['FMArg2k3qOY', 'UuKjJW55MJk', 'y4oUiX28Y5E', 'YddMIRGIwYA', 'FMArg2k3qOY'],
+  'galaxy-watch': ['UuKjJW55MJk', 'FMArg2k3qOY', 'y4oUiX28Y5E', 'YddMIRGIwYA', 'UuKjJW55MJk'],
+  garmin: ['y4oUiX28Y5E', 'FMArg2k3qOY', 'UuKjJW55MJk', 'YddMIRGIwYA', 'y4oUiX28Y5E'],
+  'xiaomi-watch': ['YddMIRGIwYA', 'FMArg2k3qOY', 'UuKjJW55MJk', 'y4oUiX28Y5E', 'YddMIRGIwYA'],
+};
+
+function getProductImage(subSlug: string, index: number): string {
+  const photos = subcategoryImages[subSlug] || ['FO7JIlwjOtU'];
+  const photoId = photos[index % photos.length];
+  return `https://images.unsplash.com/photo-${photoId}?w=400&h=400&fit=crop&auto=format&q=75`;
+}
+
 const subcategoryNames: Record<string, string> = {
   cpu: 'CPU - Bộ vi xử lý', vga: 'VGA - Card đồ họa', ram: 'RAM', 'ssd-hdd': 'SSD / HDD',
   mainboard: 'Mainboard', psu: 'PSU - Nguồn máy tính', 'case': 'Case - Vỏ máy tính', 'tan-nhiet': 'Tản nhiệt',
@@ -355,8 +403,8 @@ for (const [subSlug, template] of Object.entries(productTemplates)) {
       rating: Math.round((3.5 + random() * 1.5) * 10) / 10,
       reviewCount: Math.floor(random() * 500 + 5),
       stock: random() > 0.1 ? Math.floor(random() * 100 + 1) : 0,
-      images: [`/products/${subSlug}-${(i % 5) + 1}.jpg`],
-      thumbnail: `/products/${subSlug}-${(i % 5) + 1}.jpg`,
+      images: [getProductImage(subSlug, i)],
+      thumbnail: getProductImage(subSlug, i),
       description: `${name} - Sản phẩm chính hãng ${brand}, bảo hành 24 tháng. Mua tại CyberGravity với giá tốt nhất, giao hàng nhanh toàn quốc.`,
       specs: pickSpecs(template.specs),
       tags: [brand.toLowerCase(), subSlug, categoryMap[subSlug].toLowerCase()],

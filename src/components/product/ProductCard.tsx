@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShoppingCart, Star, Eye, Zap } from 'lucide-react';
 import { Product } from '@/lib/types';
 import { formatPrice } from '@/lib/utils';
@@ -18,10 +19,15 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
     >
       {/* Image */}
       <Link href={`/products/${product.slug}`} className="block relative aspect-square overflow-hidden bg-bg-tertiary/50">
-        <div className="w-full h-full flex items-center justify-center p-6">
-          <div className="w-full h-full rounded-lg bg-gradient-to-br from-white/5 to-white/[0.02] flex items-center justify-center">
-            <span className="text-4xl opacity-30">📦</span>
-          </div>
+        <div className="w-full h-full flex items-center justify-center">
+          <Image
+            src={product.thumbnail}
+            alt={product.name}
+            width={400}
+            height={400}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            unoptimized
+          />
         </div>
 
         {/* Badges */}

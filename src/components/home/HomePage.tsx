@@ -177,8 +177,13 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
               {flashSale.map((product, i) => (
                 <div key={product.id} className="product-card p-3 space-y-2">
-                  <div className="aspect-square rounded-lg bg-bg-tertiary/30 flex items-center justify-center">
-                    <span className="text-3xl opacity-30">📦</span>
+                  <div className="aspect-square rounded-lg bg-bg-tertiary/30 overflow-hidden">
+                    <img
+                      src={product.thumbnail}
+                      alt={product.name}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
                   </div>
                   <p className="text-xs text-text-secondary line-clamp-2">{product.name}</p>
                   <div>
