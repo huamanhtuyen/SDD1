@@ -25,7 +25,7 @@ export default function Header() {
     <header className="sticky top-0 z-50">
       {/* Top bar */}
       <div className="bg-bg-primary/80 backdrop-blur-xl border-b border-white/5">
-        <div className="container-page py-2.5 flex items-center justify-between text-xs text-text-secondary">
+        <div className="container-page py-3.5 flex items-center justify-between text-xs text-text-secondary">
           <span>🚀 Miễn phí vận chuyển cho đơn hàng từ 500.000đ</span>
           <div className="flex items-center gap-4">
             <button className="flex items-center gap-1 hover:text-text-primary transition-colors">
@@ -40,7 +40,7 @@ export default function Header() {
 
       {/* Main header */}
       <div className="bg-bg-secondary/80 backdrop-blur-xl border-b border-white/10">
-        <div className="container-page py-4 flex items-center gap-6">
+        <div className="container-page py-5 flex items-center gap-6">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-primary to-accent-secondary flex items-center justify-center neon-glow transition-all duration-300">
@@ -111,13 +111,13 @@ export default function Header() {
         </div>
 
         {/* Category nav */}
-        <nav className="hidden lg:block container-page pb-3">
-          <div className="flex items-center gap-2">
+        <nav className="hidden lg:block container-page pb-4">
+          <div className="flex items-center gap-3">
             {navCategories.map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/products?category=${cat.slug}`}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-white/5 transition-all group"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-white/5 transition-all group"
               >
                 <cat.icon className="w-4 h-4 text-text-tertiary group-hover:text-accent-primary transition-colors" />
                 <span>{cat.name}</span>
