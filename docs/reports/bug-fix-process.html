@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quy trình Fix Bug theo SDD & TDD — CyberGravity</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Inter',system-ui,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.7}
+.container{max-width:1100px;margin:0 auto;padding:0 40px}
+
+/* Header */
+.hero{background:linear-gradient(135deg,#0d1117 0%,#161b22 40%,#1a1040 100%);padding:60px 0 50px;border-bottom:1px solid #30363d;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(248,81,73,0.12),transparent 70%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(210,153,34,0.08),transparent 70%);border-radius:50%}
+.hero h1{font-size:36px;font-weight:700;background:linear-gradient(135deg,#f85149,#e3b341);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;z-index:1}
+.hero .subtitle{font-size:18px;color:#8b949e;margin-top:8px;position:relative;z-index:1}
+.hero .project{display:inline-block;margin-top:16px;padding:6px 16px;border-radius:20px;background:rgba(248,81,73,0.12);border:1px solid rgba(248,81,73,0.3);color:#f85149;font-size:13px;position:relative;z-index:1}
+
+/* Navigation */
+.toc{background:#161b22;border-bottom:1px solid #30363d;padding:20px 0;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.toc-inner{display:flex;gap:8px;flex-wrap:wrap}
+.toc a{color:#8b949e;text-decoration:none;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:500;transition:all .2s}
+.toc a:hover{background:rgba(248,81,73,0.12);color:#f85149}
+
+/* Sections */
+section{padding:48px 0;border-bottom:1px solid #21262d}
+section:last-child{border-bottom:none}
+h2{font-size:26px;font-weight:700;color:#f0f6fc;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+h2 .icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+h3{font-size:18px;color:#f0f6fc;margin:24px 0 12px;font-weight:600}
+h4{font-size:15px;color:#c9d1d9;margin:16px 0 8px;font-weight:600}
+p{color:#c9d1d9;margin-bottom:16px}
+
+/* Cards */
+.card{background:rgba(22,27,34,0.8);border:1px solid #30363d;border-radius:12px;padding:24px;margin-bottom:16px;transition:border-color .2s}
+.card:hover{border-color:rgba(248,81,73,0.4)}
+.card-title{font-size:16px;font-weight:600;color:#f0f6fc;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card-desc{color:#8b949e;font-size:14px}
+
+/* Voucher Cover */
+.voucher-cover{background:linear-gradient(135deg,rgba(248,81,73,0.06),rgba(210,153,34,0.04));border:2px solid rgba(248,81,73,0.3);border-radius:16px;padding:32px;margin:24px 0;position:relative;overflow:hidden}
+.voucher-cover::before{content:'🐛';position:absolute;top:16px;right:24px;font-size:60px;opacity:0.15}
+.voucher-cover .v-header{font-size:22px;font-weight:700;color:#f85149;margin-bottom:4px}
+.voucher-cover .v-id{font-size:13px;color:#e3b341;font-weight:600;margin-bottom:16px}
+.voucher-cover .v-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.voucher-cover .v-field{padding:12px 16px;background:rgba(13,17,23,0.6);border:1px solid #30363d;border-radius:8px}
+.voucher-cover .v-label{font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+.voucher-cover .v-value{font-size:14px;color:#f0f6fc;margin-top:4px}
+
+/* Flow Diagram */
+.flow{display:flex;align-items:stretch;gap:0;margin:24px 0;flex-wrap:wrap;justify-content:center}
+.flow-step{flex:1;min-width:120px;max-width:160px;text-align:center;padding:16px 10px;background:#161b22;border:1px solid #30363d;border-radius:12px;position:relative;transition:all .3s}
+.flow-step:hover{border-color:#f85149;transform:translateY(-4px);box-shadow:0 8px 24px rgba(248,81,73,0.15)}
+.flow-step .emoji{font-size:28px;display:block;margin-bottom:6px}
+.flow-step .label{font-size:12px;font-weight:600;color:#f0f6fc}
+.flow-step .sub{font-size:10px;color:#8b949e;margin-top:4px}
+.flow-arrow{display:flex;align-items:center;color:#484f58;font-size:20px;padding:0 4px}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th{text-align:left;padding:12px 16px;background:#161b22;color:#f0f6fc;font-weight:600;border-bottom:2px solid #30363d}
+td{padding:10px 16px;border-bottom:1px solid #21262d;color:#c9d1d9}
+tr:hover td{background:rgba(136,198,255,0.04)}
+
+/* Code Block */
+.code-block{background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:16px 20px;font-family:'Fira Code','JetBrains Mono',monospace;font-size:13px;line-height:1.6;overflow-x:auto;margin:12px 0}
+.code-block .cmt{color:#8b949e;font-style:italic}
+.code-block .kw{color:#ff7b72}
+.code-block .fn{color:#d2a8ff}
+.code-block .str{color:#a5d6ff}
+.code-block .pass{color:#3fb950;font-weight:700}
+.code-block .fail{color:#f85149;font-weight:700}
+.code-block .old{color:#f85149;text-decoration:line-through}
+.code-block .new{color:#3fb950;font-weight:700}
+
+/* Badge */
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
+.badge-purple{background:rgba(139,92,246,0.15);color:#a78bfa}
+.badge-green{background:rgba(63,185,80,0.15);color:#3fb950}
+.badge-red{background:rgba(248,81,73,0.15);color:#f85149}
+.badge-blue{background:rgba(56,139,253,0.15);color:#58a6ff}
+.badge-amber{background:rgba(210,153,34,0.15);color:#e3b341}
+
+/* Alert */
+.alert{padding:16px 20px;border-radius:10px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+.alert-info{background:rgba(56,139,253,0.08);border:1px solid rgba(56,139,253,0.3);color:#58a6ff}
+.alert-warn{background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.3);color:#e3b341}
+.alert-success{background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.3);color:#3fb950}
+.alert-danger{background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.3);color:#f85149}
+
+/* Comparison */
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.comparison .col{padding:20px;border-radius:12px}
+.comparison .col-old{background:rgba(248,81,73,0.05);border:1px solid rgba(248,81,73,0.2)}
+.comparison .col-new{background:rgba(63,185,80,0.05);border:1px solid rgba(63,185,80,0.2)}
+.comparison .col-title{font-size:14px;font-weight:700;margin-bottom:12px}
+.comparison .col-old .col-title{color:#f85149}
+.comparison .col-new .col-title{color:#3fb950}
+
+/* Scenario */
+.scenario{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:24px;margin:20px 0}
+.scenario-title{font-size:16px;font-weight:700;color:#f0f6fc;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:8px}
+.step-list{list-style:none;padding:0}
+.step-list li{padding:10px 0 10px 32px;position:relative;border-left:2px solid #30363d;margin-left:12px}
+.step-list li::before{content:attr(data-step);position:absolute;left:-13px;top:8px;width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-list li.s-red::before{background:rgba(248,81,73,0.2);color:#f85149;border:2px solid #f85149}
+.step-list li.s-green::before{background:rgba(63,185,80,0.2);color:#3fb950;border:2px solid #3fb950}
+.step-list li.s-blue::before{background:rgba(56,139,253,0.2);color:#58a6ff;border:2px solid #58a6ff}
+.step-list li.s-purple::before{background:rgba(139,92,246,0.2);color:#a78bfa;border:2px solid #a78bfa}
+.step-list li.s-amber::before{background:rgba(210,153,34,0.2);color:#e3b341;border:2px solid #e3b341}
+.step-list li:last-child{border-left-color:transparent}
+
+/* Timeline */
+.timeline{margin:24px 0}
+.timeline-item{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
+.timeline-time{min-width:100px;text-align:right;font-size:13px;color:#e3b341;font-weight:600;padding-top:4px}
+.timeline-dot{width:12px;height:12px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.timeline-content{flex:1;padding:12px 16px;background:rgba(22,27,34,0.8);border:1px solid #30363d;border-radius:8px;font-size:13px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}
+.stat{text-align:center;padding:24px 16px;background:#161b22;border:1px solid #30363d;border-radius:12px;transition:all .3s}
+.stat:hover{border-color:#e3b341;transform:translateY(-2px)}
+.stat .stat-num{font-size:32px;font-weight:800;margin-bottom:4px}
+.stat .stat-label{font-size:12px;color:#8b949e}
+
+/* Highlight */
+.highlight{color:#a78bfa;font-weight:600}
+em{color:#e3b341;font-style:normal;font-weight:500}
+strong{color:#f0f6fc}
+
+/* Footer */
+.footer{padding:40px 0;text-align:center;color:#484f58;font-size:13px;border-top:1px solid #21262d;margin-top:40px}
+
+/* Testcase template */
+.tc-template{background:#0d1117;border:2px dashed #30363d;border-radius:12px;padding:20px;margin:16px 0}
+.tc-template .tc-header{font-size:14px;font-weight:700;color:#e3b341;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.tc-template table{margin:0}
+.tc-template td:first-child{width:140px;font-weight:600;color:#8b949e;white-space:nowrap}
+
+/* Document checklist */
+.checklist{list-style:none;padding:0;margin:12px 0}
+.checklist li{padding:8px 12px;margin-bottom:6px;background:rgba(22,27,34,0.6);border:1px solid #30363d;border-radius:8px;font-size:14px;display:flex;align-items:center;gap:10px}
+.checklist li .check{color:#3fb950;font-size:16px}
+
+@media(max-width:768px){
+  .comparison,.voucher-cover .v-grid,.stats{grid-template-columns:1fr}
+  .flow{flex-direction:column;align-items:center}
+  .flow-arrow{transform:rotate(90deg)}
+  .timeline-time{min-width:70px;font-size:11px}
+  .container{padding:0 20px}
+  .hero h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<div class="hero">
+  <div class="container">
+    <h1>Quy trình Fix Bug theo SDD & TDD</h1>
+    <p class="subtitle">Bug Voucher Documentation — Kiểm soát chất lượng từ tái hiện bug đến triển khai fix</p>
+    <span class="project">🐛 Dự án: CyberGravity E-Commerce · Ngày: 18/03/2026</span>
+  </div>
+</div>
+
+<!-- ==================== TOC ==================== -->
+<div class="toc">
+  <div class="container">
+    <div class="toc-inner">
+      <a href="#cover">Bug Voucher</a>
+      <a href="#flow">Quy trình Fix Bug</a>
+      <a href="#reproduce">Tái hiện Bug</a>
+      <a href="#solution">Giải pháp sửa chữa</a>
+      <a href="#similar">Similar Bug</a>
+      <a href="#degrade">Degrade Review</a>
+      <a href="#testcases">Test Cases</a>
+      <a href="#example">Ví dụ thực tế</a>
+      <a href="#ai-impact">AI hỗ trợ</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ==================== S1: COVER ==================== -->
+<section id="cover">
+  <h2><span class="icon" style="background:rgba(248,81,73,0.15)">📋</span> 1. Bug Voucher — Bộ tài liệu Fix Bug</h2>
+
+  <p>Mỗi bug khi được phát hiện phải có một <span class="highlight">Bug Voucher</span> — bộ tài liệu hoàn chỉnh mô tả toàn bộ vòng đời fix bug, từ <em>tái hiện → phân tích → sửa chữa → kiểm soát degrade → test → triển khai</em>. Bug Voucher là bằng chứng kiểm soát chất lượng của quy trình SDD + TDD.</p>
+
+  <div class="voucher-cover">
+    <div class="v-header">BUG VOUCHER #BV-2026-0042</div>
+    <div class="v-id">Module: Voucher Discount · Priority: High · Status: Fixed & Verified</div>
+    <div class="v-grid">
+      <div class="v-field">
+        <div class="v-label">📍 Mô tả Bug</div>
+        <div class="v-value">Điều kiện so sánh voucher bị ngược logic (== thay vì !=), dẫn đến áp mã giảm giá sai cho khách hàng</div>
+      </div>
+      <div class="v-field">
+        <div class="v-label">🔍 Người phát hiện</div>
+        <div class="v-value">QA Team — Phát hiện qua E2E test trên môi trường Staging</div>
+      </div>
+      <div class="v-field">
+        <div class="v-label">📅 Ngày phát hiện / Ngày fix</div>
+        <div class="v-value">15/03/2026 → 18/03/2026 (3 ngày làm việc)</div>
+      </div>
+      <div class="v-field">
+        <div class="v-label">👤 Developer phụ trách</div>
+        <div class="v-value">Dev Team — Review bởi Tech Lead</div>
+      </div>
+    </div>
+
+    <h4 style="color:#e3b341;margin-top:20px;margin-bottom:12px">📦 Thành phần Bug Voucher bao gồm:</h4>
+    <ul class="checklist">
+      <li><span class="check">✅</span> <strong>Cover Page</strong> — Thông tin tổng quan bug (trang này)</li>
+      <li><span class="check">✅</span> <strong>Bug Reproduction Report</strong> — Các bước tái hiện bug chi tiết</li>
+      <li><span class="check">✅</span> <strong>Fix Solution Document</strong> — Phân tích nguyên nhân & giải pháp sửa chữa</li>
+      <li><span class="check">✅</span> <strong>Similar Bug Analysis</strong> — Khảo sát các bug tương tự trong codebase</li>
+      <li><span class="check">✅</span> <strong>Degrade Review</strong> — Đánh giá ảnh hưởng của bản fix lên các chức năng liên quan</li>
+      <li><span class="check">✅</span> <strong>Test Cases</strong> — Bộ test case: Correction Bug, Degrade Test, Similar Fix Test</li>
+      <li><span class="check">✅</span> <strong>Test Execution Report</strong> — Kết quả chạy test trên các môi trường</li>
+      <li><span class="check">✅</span> <strong>Sign-off Sheet</strong> — Xác nhận hoàn thành bởi Dev, QA, Tech Lead</li>
+    </ul>
+  </div>
+
+  <div class="alert alert-warn">
+    <span>⚠️</span>
+    <div><strong>Tại sao cần Bug Voucher?</strong> Nếu không kiểm soát chất lượng, <em>sửa 1 dòng code chỉ mất 2 giây</em>. Nhưng hậu quả có thể là hàng chục bug mới từ degrade, lỗi tương tự ở module khác, và sản phẩm bị lỗi trên production — mất hàng tuần để khắc phục.</div>
+  </div>
+</section>
+
+<!-- ==================== S2: FLOW ==================== -->
+<section id="flow">
+  <h2><span class="icon" style="background:rgba(210,153,34,0.15)">🔄</span> 2. Quy trình Fix Bug tổng thể</h2>
+
+  <div class="flow">
+    <div class="flow-step" style="border-color:rgba(248,81,73,0.3)"><span class="emoji">🐛</span><span class="label">Phát hiện Bug</span><span class="sub">QA / User</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(139,92,246,0.3)"><span class="emoji">🔍</span><span class="label">Tái hiện</span><span class="sub">Reproduce</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(56,139,253,0.3)"><span class="emoji">📝</span><span class="label">Phân tích</span><span class="sub">Root Cause</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(6,182,212,0.3)"><span class="emoji">🔎</span><span class="label">Similar Bug</span><span class="sub">Khảo sát</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(248,81,73,0.3)"><span class="emoji">🔴</span><span class="label">Viết Test</span><span class="sub">RED phase</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(63,185,80,0.3)"><span class="emoji">🟢</span><span class="label">Fix Code</span><span class="sub">GREEN phase</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(210,153,34,0.3)"><span class="emoji">⚡</span><span class="label">Degrade Review</span><span class="sub">Kiểm tra</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step" style="border-color:rgba(63,185,80,0.3)"><span class="emoji">✅</span><span class="label">Deploy</span><span class="sub">Sign-off</span></div>
+  </div>
+</section>
+
+<!-- ==================== S3: REPRODUCE ==================== -->
+<section id="reproduce">
+  <h2><span class="icon" style="background:rgba(139,92,246,0.15)">🔍</span> 3. Tái hiện Bug (Bug Reproduction)</h2>
+
+  <p>Bước đầu tiên và quan trọng nhất: <em>tái hiện bug một cách chính xác và lặp lại được</em>. Nếu không tái hiện được bug thì không thể xác nhận đã fix đúng.</p>
+
+  <div class="scenario">
+    <div class="scenario-title">🔍 Ví dụ: Tái hiện bug so sánh voucher</div>
+    <ol class="step-list">
+      <li class="s-red" data-step="1"><strong>Mô tả bug:</strong> Khi nhập mã voucher hợp lệ "CYBER20", hệ thống hiển thị "Mã không hợp lệ" thay vì áp dụng giảm giá 20%</li>
+      <li class="s-purple" data-step="2"><strong>Precondition:</strong> Giỏ hàng có ≥ 1 sản phẩm, tổng giá > 0đ</li>
+      <li class="s-blue" data-step="3"><strong>Bước 1:</strong> Thêm sản phẩm "Laptop Gaming" (25,000,000đ) vào giỏ hàng</li>
+      <li class="s-blue" data-step="4"><strong>Bước 2:</strong> Nhập mã voucher "CYBER20" vào ô discount code</li>
+      <li class="s-blue" data-step="5"><strong>Bước 3:</strong> Nhấn "Áp dụng"</li>
+      <li class="s-red" data-step="6"><strong>Kết quả thực tế:</strong> Hiển thị "Mã không hợp lệ". Giá vẫn 25,000,000đ</li>
+      <li class="s-green" data-step="7"><strong>Kết quả mong đợi:</strong> Áp dụng giảm 20%. Giá = 20,000,000đ</li>
+    </ol>
+  </div>
+
+  <div class="code-block">
+<span class="cmt">// Root Cause Analysis: file src/context/CartContext.tsx, dòng 47</span>
+<span class="cmt">// Bug: Điều kiện so sánh bị NGƯỢC LOGIC</span>
+
+<span class="kw">const</span> applyDiscount = (code: string) =&gt; {
+  <span class="old">if (code == VALID_CODES[code])  // ❌ SAI: so sánh code string với discount number</span>
+  <span class="new">if (code != null &amp;&amp; VALID_CODES[code] !== undefined)  // ✅ ĐÚNG</span>
+};
+  </div>
+</section>
+
+<!-- ==================== S4: SOLUTION ==================== -->
+<section id="solution">
+  <h2><span class="icon" style="background:rgba(63,185,80,0.15)">🔧</span> 4. Giải pháp sửa chữa (Fix Solution)</h2>
+
+  <p>Giải pháp sửa chữa phải được <em>phân tích kỹ nguyên nhân gốc (Root Cause)</em> trước khi viết code fix. Tuyệt đối không fix kiểu "thử sửa rồi xem".</p>
+
+  <div class="comparison">
+    <div class="col col-old">
+      <div class="col-title">❌ Code lỗi (Before)</div>
+      <div class="code-block">
+<span class="cmt">// CartContext.tsx - dòng 47</span>
+<span class="kw">const</span> applyDiscount = (code: string) =&gt; {
+  <span class="kw">if</span> (code <span class="fail">==</span> VALID_CODES[code]) {
+    <span class="cmt">// Logic: so sánh "CYBER20" == 20</span>
+    <span class="cmt">// Kết quả: luôn false → voucher</span>
+    <span class="cmt">// bị reject dù hợp lệ</span>
+    setDiscount(0);
+    setError(<span class="str">"Mã không hợp lệ"</span>);
+  }
+};
+      </div>
+    </div>
+    <div class="col col-new">
+      <div class="col-title">✅ Code đã fix (After)</div>
+      <div class="code-block">
+<span class="cmt">// CartContext.tsx - dòng 47</span>
+<span class="kw">const</span> applyDiscount = (code: string) =&gt; {
+  <span class="kw">const</span> percent = VALID_CODES[code];
+  <span class="kw">if</span> (percent <span class="pass">!==</span> <span class="kw">undefined</span>) {
+    <span class="cmt">// Logic: kiểm tra key tồn tại</span>
+    <span class="cmt">// Kết quả: voucher hợp lệ → apply</span>
+    setDiscount(percent);
+    setError(<span class="kw">null</span>);
+  }
+};
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info">
+    <span>💡</span>
+    <div><strong>Phân tích Root Cause:</strong> Developer ban đầu dùng <code>==</code> (so sánh giá trị) thay vì kiểm tra sự tồn tại của key. String <code>"CYBER20"</code> so sánh với Number <code>20</code> → luôn <code>false</code> → mọi voucher đều bị reject.</div>
+  </div>
+</section>
+
+<!-- ==================== S5: SIMILAR ==================== -->
+<section id="similar">
+  <h2><span class="icon" style="background:rgba(6,182,212,0.15)">🔎</span> 5. Similar Bug Analysis — Khảo sát Bug tương tự</h2>
+
+  <p>Sau khi hiểu root cause, <em>bắt buộc phải khảo sát toàn bộ codebase</em> để tìm các đoạn code có pattern tương tự — có khả năng chứa cùng loại bug.</p>
+
+  <div class="scenario">
+    <div class="scenario-title">🔎 Kết quả khảo sát Similar Bug</div>
+    <table>
+      <tr><th>File</th><th>Dòng</th><th>Pattern tương tự</th><th>Status</th></tr>
+      <tr><td>CartContext.tsx</td><td>47</td><td><code>code == VALID_CODES[code]</code></td><td><span class="badge badge-red">BUG CHÍNH</span></td></tr>
+      <tr><td>SearchFilter.tsx</td><td>82</td><td><code>category == categories[id]</code></td><td><span class="badge badge-amber">Nghi ngờ</span></td></tr>
+      <tr><td>AuthContext.tsx</td><td>31</td><td><code>role == ROLES[userRole]</code></td><td><span class="badge badge-amber">Nghi ngờ</span></td></tr>
+      <tr><td>utils.ts</td><td>15</td><td><code>key !== undefined</code> (đúng pattern)</td><td><span class="badge badge-green">OK</span></td></tr>
+    </table>
+  </div>
+
+  <div class="alert alert-danger">
+    <span>🚨</span>
+    <div><strong>Phát hiện thêm 2 chỗ nghi ngờ!</strong> Khảo sát similar bug phát hiện SearchFilter.tsx và AuthContext.tsx có cùng pattern lỗi. Phải kiểm tra và fix cùng lúc — đây chính là giá trị của bước Similar Bug Analysis.</div>
+  </div>
+</section>
+
+<!-- ==================== S6: DEGRADE ==================== -->
+<section id="degrade">
+  <h2><span class="icon" style="background:rgba(210,153,34,0.15)">⚡</span> 6. Degrade Review — Đánh giá ảnh hưởng</h2>
+
+  <p>Degrade Review kiểm tra xem bản fix có <em>gây hỏng (degrade) các chức năng khác không</em>. Đây là bước quan trọng nhất để phòng ngừa regression bug.</p>
+
+  <h3>6.1. Impact Analysis Matrix</h3>
+  <table>
+    <tr><th>Chức năng liên quan</th><th>Mức độ ảnh hưởng</th><th>Cần test lại?</th><th>Kết quả</th></tr>
+    <tr><td>Giỏ hàng — Thêm/Xóa sản phẩm</td><td><span class="badge badge-amber">Trung bình</span></td><td>✅ Có</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>Giỏ hàng — Tính tổng tiền</td><td><span class="badge badge-red">Cao</span></td><td>✅ Có</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>Checkout — Thanh toán</td><td><span class="badge badge-red">Cao</span></td><td>✅ Có</td><td><span class="badge badge-green">PASS</span></td></tr>
+    <tr><td>Trang chủ — Hiển thị sản phẩm</td><td><span class="badge badge-green">Thấp</span></td><td>❌ Không</td><td>—</td></tr>
+    <tr><td>Tìm kiếm sản phẩm</td><td><span class="badge badge-green">Thấp</span></td><td>❌ Không</td><td>—</td></tr>
+  </table>
+
+  <h3>6.2. Kiểm tra trên các môi trường</h3>
+  <table>
+    <tr><th>Môi trường</th><th>Unit Test</th><th>E2E Test</th><th>Manual Test</th><th>Status</th></tr>
+    <tr><td>Development (local)</td><td><span class="badge badge-green">84/84 PASS</span></td><td><span class="badge badge-green">24/24 PASS</span></td><td>✅</td><td><span class="badge badge-green">OK</span></td></tr>
+    <tr><td>Staging</td><td><span class="badge badge-green">84/84 PASS</span></td><td><span class="badge badge-green">24/24 PASS</span></td><td>✅</td><td><span class="badge badge-green">OK</span></td></tr>
+    <tr><td>Pre-Production</td><td><span class="badge badge-green">84/84 PASS</span></td><td><span class="badge badge-green">24/24 PASS</span></td><td>✅</td><td><span class="badge badge-green">OK</span></td></tr>
+  </table>
+</section>
+
+<!-- ==================== S7: TESTCASES ==================== -->
+<section id="testcases">
+  <h2><span class="icon" style="background:rgba(56,139,253,0.15)">🧪</span> 7. Test Cases — Mẫu Testcase</h2>
+
+  <h3>7.1. Mẫu Testcase — Correction Bug (Sửa bug chính)</h3>
+  <div class="tc-template">
+    <div class="tc-header">📋 TC-BV042-01: Verify bug fix — Voucher CYBER20 được áp dụng đúng</div>
+    <table>
+      <tr><td>Test Case ID</td><td>TC-BV042-01</td></tr>
+      <tr><td>Bug Voucher Ref</td><td>BV-2026-0042</td></tr>
+      <tr><td>Loại</td><td><span class="badge badge-red">Correction Bug</span></td></tr>
+      <tr><td>Precondition</td><td>Giỏ hàng có sản phẩm "Laptop Gaming" giá 25,000,000đ</td></tr>
+      <tr><td>Bước thực hiện</td><td>1. Nhập mã "CYBER20" → 2. Nhấn "Áp dụng"</td></tr>
+      <tr><td>Kết quả mong đợi</td><td>Giảm giá 20% được áp dụng. Tổng = 20,000,000đ. Thông báo thành công.</td></tr>
+      <tr><td>Kết quả thực tế</td><td><span class="badge badge-green">PASS</span> — Đúng như mong đợi</td></tr>
+      <tr><td>Môi trường</td><td>Dev ✅ · Staging ✅ · Pre-Prod ✅</td></tr>
+    </table>
+  </div>
+
+  <h3>7.2. Mẫu Testcase — Degrade (Kiểm tra không phá vỡ chức năng cũ)</h3>
+  <div class="tc-template">
+    <div class="tc-header">📋 TC-BV042-02: Degrade test — Giỏ hàng vẫn tính tổng đúng</div>
+    <table>
+      <tr><td>Test Case ID</td><td>TC-BV042-02</td></tr>
+      <tr><td>Bug Voucher Ref</td><td>BV-2026-0042</td></tr>
+      <tr><td>Loại</td><td><span class="badge badge-amber">Degrade Test</span></td></tr>
+      <tr><td>Precondition</td><td>Giỏ hàng có 2 sản phẩm: Laptop (25M) và Chuột (500K)</td></tr>
+      <tr><td>Bước thực hiện</td><td>1. Kiểm tra tổng tiền → 2. Thay đổi số lượng → 3. Xóa sản phẩm</td></tr>
+      <tr><td>Kết quả mong đợi</td><td>Tổng tiền cập nhật chính xác: 25,500,000đ → thay đổi đúng → xóa đúng</td></tr>
+      <tr><td>Kết quả thực tế</td><td><span class="badge badge-green">PASS</span> — Không bị degrade</td></tr>
+      <tr><td>Ghi chú</td><td>Chức năng giỏ hàng không bị ảnh hưởng bởi bản fix voucher</td></tr>
+    </table>
+  </div>
+
+  <h3>7.3. Mẫu Testcase — Similar Fix (Sửa bug tương tự ở module khác)</h3>
+  <div class="tc-template">
+    <div class="tc-header">📋 TC-BV042-03: Similar fix — SearchFilter category comparison</div>
+    <table>
+      <tr><td>Test Case ID</td><td>TC-BV042-03</td></tr>
+      <tr><td>Bug Voucher Ref</td><td>BV-2026-0042 (Similar)</td></tr>
+      <tr><td>Loại</td><td><span class="badge badge-blue">Similar Fix</span></td></tr>
+      <tr><td>Precondition</td><td>Trang sản phẩm có bộ lọc danh mục</td></tr>
+      <tr><td>Bước thực hiện</td><td>1. Chọn danh mục "Laptop" → 2. Kiểm tra kết quả lọc → 3. Đổi sang "Phụ kiện"</td></tr>
+      <tr><td>Kết quả mong đợi</td><td>Bộ lọc hoạt động đúng, chỉ hiển thị sản phẩm thuộc danh mục đã chọn</td></tr>
+      <tr><td>Kết quả thực tế</td><td><span class="badge badge-green">PASS</span> — Similar fix hoạt động đúng</td></tr>
+      <tr><td>Ghi chú</td><td>Đã fix cùng pattern <code>==</code> → <code>!== undefined</code> tại SearchFilter.tsx:82</td></tr>
+    </table>
+  </div>
+
+  <h3>7.4. Code Test tương ứng</h3>
+  <div class="code-block">
+<span class="cmt">// __tests__/bugfix-BV042.test.ts</span>
+
+<span class="fn">describe</span>(<span class="str">'BV-2026-0042: Voucher comparison bug fix'</span>, () =&gt; {
+
+  <span class="cmt">// ── Correction Bug Tests ──</span>
+  <span class="fn">test</span>(<span class="str">'TC-01: CYBER20 applies 20% discount correctly'</span>, () =&gt; {
+    <span class="kw">const</span> result = applyDiscount(<span class="str">'CYBER20'</span>);
+    <span class="fn">expect</span>(result.percent).toBe(20);
+    <span class="fn">expect</span>(result.error).toBeNull();
+  });
+
+  <span class="fn">test</span>(<span class="str">'TC-01b: Invalid code is rejected'</span>, () =&gt; {
+    <span class="kw">const</span> result = applyDiscount(<span class="str">'INVALID'</span>);
+    <span class="fn">expect</span>(result.percent).toBe(0);
+    <span class="fn">expect</span>(result.error).toBe(<span class="str">'Mã không hợp lệ'</span>);
+  });
+
+  <span class="cmt">// ── Degrade Tests ──</span>
+  <span class="fn">test</span>(<span class="str">'TC-02: Cart total unchanged for non-discount operations'</span>, () =&gt; {
+    addItem(laptop);  <span class="cmt">// 25,000,000</span>
+    addItem(mouse);   <span class="cmt">// 500,000</span>
+    <span class="fn">expect</span>(getTotal()).toBe(25500000);
+  });
+
+  <span class="cmt">// ── Similar Fix Tests ──</span>
+  <span class="fn">test</span>(<span class="str">'TC-03: SearchFilter category comparison works'</span>, () =&gt; {
+    <span class="kw">const</span> filtered = filterByCategory(<span class="str">'laptop'</span>);
+    <span class="fn">expect</span>(filtered.length).toBeGreaterThan(0);
+    filtered.forEach(p =&gt; <span class="fn">expect</span>(p.category).toBe(<span class="str">'laptop'</span>));
+  });
+});
+
+<span class="pass">PASS  4 tests passed ✅</span>
+  </div>
+</section>
+
+<!-- ==================== S8: EXAMPLE ==================== -->
+<section id="example">
+  <h2><span class="icon" style="background:rgba(248,81,73,0.15)">💻</span> 8. Ví dụ thực tế: Sửa 1 dòng code, tốn 1 tháng công</h2>
+
+  <div class="alert alert-danger">
+    <span>🔥</span>
+    <div><strong>Thực tế đau thương:</strong> Bug chỉ cần sửa đúng 1 dòng code — đổi <code>if (A == B)</code> thành <code>if (A != B)</code> — nhưng toàn bộ quy trình kiểm soát chất lượng tốn <em>gần 1 tháng công</em> (trước khi có AI hỗ trợ).</div>
+  </div>
+
+  <h3>8.1. Bản fix thật sự — chỉ 1 dòng code</h3>
+  <div class="code-block">
+<span class="cmt">// Toàn bộ code thay đổi — DUY NHẤT 1 DÒNG:</span>
+
+<span class="old">- if (code == VALID_CODES[code]) {   // ❌ SAI</span>
+<span class="new">+ if (code != null &amp;&amp; VALID_CODES[code] !== undefined) {  // ✅ ĐÚNG</span>
+
+<span class="cmt">// Thời gian sửa dòng code này: 2 giây</span>
+<span class="cmt">// Thời gian hoàn thành Bug Voucher: ~1 tháng (không AI)</span>
+  </div>
+
+  <h3>8.2. Breakdown chi tiết — 1 tháng công cho 1 dòng code</h3>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time">Ngày 1-2</div>
+      <div class="timeline-dot" style="background:#f85149"></div>
+      <div class="timeline-content"><strong>🐛 Tái hiện & phân tích bug</strong><br>Xác nhận bug, tái hiện trên nhiều trường hợp, phân tích root cause, viết Bug Reproduction Report</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Ngày 3-5</div>
+      <div class="timeline-dot" style="background:#a78bfa"></div>
+      <div class="timeline-content"><strong>🔎 Khảo sát Similar Bug</strong><br>Review toàn bộ codebase tìm pattern tương tự, viết Similar Bug Analysis report, ước lượng impact</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Ngày 6-7</div>
+      <div class="timeline-dot" style="background:#58a6ff"></div>
+      <div class="timeline-content"><strong>📝 Viết tài liệu Fix Solution</strong><br>Tài liệu giải pháp sửa chữa, update SRS/SDD, phê duyệt giải pháp</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Ngày 8-12</div>
+      <div class="timeline-dot" style="background:#f85149"></div>
+      <div class="timeline-content"><strong>🧪 Viết Test Cases</strong><br>Viết Correction Bug testcase, Degrade testcase, Similar Fix testcase — tổng ~15-20 testcase manual + automated</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Ngày 13</div>
+      <div class="timeline-dot" style="background:#3fb950"></div>
+      <div class="timeline-content"><strong>🔧 Sửa code — 2 GIÂY</strong><br>Đổi <code>==</code> thành <code>!=</code>. Chạy test → PASS. Commit code.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Ngày 14-17</div>
+      <div class="timeline-dot" style="background:#e3b341"></div>
+      <div class="timeline-content"><strong>⚡ Degrade Review & Test</strong><br>Chạy toàn bộ test suite trên Dev → Staging → Pre-Prod. Manual test các chức năng liên quan. Viết Degrade Report.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Ngày 18-20</div>
+      <div class="timeline-dot" style="background:#3fb950"></div>
+      <div class="timeline-content"><strong>✅ Review & Sign-off</strong><br>Code review, tổng hợp Bug Voucher, phê duyệt bởi Tech Lead & QA Lead, deploy to production</div>
+    </div>
+  </div>
+
+  <h3>8.3. So sánh: Có kiểm soát chất lượng vs. Không kiểm soát</h3>
+  <div class="comparison">
+    <div class="col col-old">
+      <div class="col-title">😱 Không kiểm soát chất lượng</div>
+      <p style="font-size:13px">Developer mở file → sửa 1 dòng → save → deploy</p>
+      <div class="stat" style="border:none;padding:16px;margin:8px 0">
+        <div class="stat-num" style="color:#f85149">2 giây</div>
+        <div class="stat-label">Thời gian "fix"</div>
+      </div>
+      <p style="font-size:13px;color:#f85149"><strong>Hậu quả tiềm ẩn:</strong></p>
+      <ul style="font-size:13px;color:#8b949e;padding-left:20px;margin-bottom:0">
+        <li>Không biết có similar bug ở module khác</li>
+        <li>Không biết fix có gây degrade không</li>
+        <li>Không có test chứng minh fix đúng</li>
+        <li>Bug tái xuất hiện sau vài tuần</li>
+        <li>Mất hàng tuần fix lại trên production</li>
+      </ul>
+    </div>
+    <div class="col col-new">
+      <div class="col-title">✅ Có kiểm soát chất lượng (SDD + TDD)</div>
+      <p style="font-size:13px">Tái hiện → Khảo sát → Tài liệu → Test → Fix → Degrade Review → Deploy</p>
+      <div class="stat" style="border:none;padding:16px;margin:8px 0">
+        <div class="stat-num" style="color:#e3b341">~20 ngày</div>
+        <div class="stat-label">Thời gian hoàn thành (không AI)</div>
+      </div>
+      <p style="font-size:13px;color:#3fb950"><strong>Đảm bảo:</strong></p>
+      <ul style="font-size:13px;color:#8b949e;padding-left:20px;margin-bottom:0">
+        <li>Phát hiện & fix luôn 2 similar bugs</li>
+        <li>Degrade review xác nhận không phá vỡ</li>
+        <li>15+ test cases bảo vệ vĩnh viễn</li>
+        <li>Bug Voucher làm tài liệu tham chiếu</li>
+        <li>Tự tin deploy, không lo lỗi ẩn</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== S9: AI IMPACT ==================== -->
+<section id="ai-impact">
+  <h2><span class="icon" style="background:rgba(139,92,246,0.15)">🤖</span> 9. AI hỗ trợ — Giảm thời gian đáng kể</h2>
+
+  <p>Với sự hỗ trợ của <span class="highlight">AI (Copilot, ChatGPT, Antigravity...)</span>, quy trình vẫn giữ nguyên các bước kiểm soát chất lượng, nhưng thời gian giảm <em>từ ~20 ngày xuống còn ~3-5 ngày</em> — giảm 75-85%.</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" style="color:#f85149">~20 ngày</div>
+      <div class="stat-label">🐌 Không có AI</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:#3fb950">~3-5 ngày</div>
+      <div class="stat-label">🤖 Có AI hỗ trợ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:#e3b341">75-85%</div>
+      <div class="stat-label">⚡ Thời gian tiết kiệm</div>
+    </div>
+  </div>
+
+  <h3>9.1. AI hỗ trợ ở đâu trong quy trình?</h3>
+
+  <table>
+    <tr><th>Bước</th><th>Không AI</th><th>Có AI</th><th>AI làm gì?</th></tr>
+    <tr>
+      <td>Tái hiện bug</td>
+      <td>1-2 ngày</td>
+      <td><span class="badge badge-green">2-4 giờ</span></td>
+      <td>AI phân tích log, đề xuất scenario tái hiện</td>
+    </tr>
+    <tr>
+      <td>Similar Bug khảo sát</td>
+      <td>3-5 ngày</td>
+      <td><span class="badge badge-green">2-4 giờ</span></td>
+      <td>AI scan toàn bộ codebase tìm pattern tương tự ngay lập tức</td>
+    </tr>
+    <tr>
+      <td>Viết tài liệu</td>
+      <td>2-3 ngày</td>
+      <td><span class="badge badge-green">0.5-1 ngày</span></td>
+      <td>AI generate Bug Voucher template, tài liệu sơ bộ</td>
+    </tr>
+    <tr>
+      <td>Viết Test Cases</td>
+      <td>5-7 ngày</td>
+      <td><span class="badge badge-green">1-2 ngày</span></td>
+      <td>AI generate test cases (correction, degrade, similar), developer review & bổ sung</td>
+    </tr>
+    <tr>
+      <td>Fix code</td>
+      <td>2 giây</td>
+      <td>2 giây</td>
+      <td>Bước này không thay đổi — vẫn chỉ 1 dòng code</td>
+    </tr>
+    <tr>
+      <td>Degrade Review</td>
+      <td>3-4 ngày</td>
+      <td><span class="badge badge-green">0.5-1 ngày</span></td>
+      <td>AI phân tích impact matrix, suggest các chức năng cần test</td>
+    </tr>
+    <tr>
+      <td>Review & Sign-off</td>
+      <td>2-3 ngày</td>
+      <td><span class="badge badge-green">0.5-1 ngày</span></td>
+      <td>AI tổng hợp report, nhưng con người vẫn phê duyệt</td>
+    </tr>
+  </table>
+
+  <div class="alert alert-success">
+    <span>✅</span>
+    <div><strong>Kết luận:</strong> AI không thay thế quy trình kiểm soát chất lượng — AI <em>tăng tốc</em> quy trình. Các bước vẫn phải thực hiện đầy đủ, nhưng thời gian cho từng bước giảm đáng kể nhờ AI hỗ trợ viết tài liệu, scan codebase, generate test, và phân tích impact.</div>
+  </div>
+
+  <h3>9.2. Tổng kết 3 kịch bản</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div class="card" style="border-color:rgba(248,81,73,0.3)">
+      <div class="card-title" style="color:#f85149">😱 Không kiểm soát</div>
+      <div class="card-desc">
+        <div class="stat" style="border:none;padding:12px 0">
+          <div class="stat-num" style="font-size:24px;color:#f85149">2 giây</div>
+        </div>
+        <p style="font-size:12px;margin:0">Sửa nhanh, nhưng rủi ro vô cùng lớn. Bug có thể lan ra toàn hệ thống mà không ai biết.</p>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(210,153,34,0.3)">
+      <div class="card-title" style="color:#e3b341">📋 Có quy trình, không AI</div>
+      <div class="card-desc">
+        <div class="stat" style="border:none;padding:12px 0">
+          <div class="stat-num" style="font-size:24px;color:#e3b341">~1 tháng</div>
+        </div>
+        <p style="font-size:12px;margin:0">An toàn, chất lượng cao, nhưng tốn rất nhiều thời gian cho tài liệu và khảo sát thủ công.</p>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(63,185,80,0.3)">
+      <div class="card-title" style="color:#3fb950">🤖 Có quy trình + AI</div>
+      <div class="card-desc">
+        <div class="stat" style="border:none;padding:12px 0">
+          <div class="stat-num" style="font-size:24px;color:#3fb950">3-5 ngày</div>
+        </div>
+        <p style="font-size:12px;margin:0">An toàn, chất lượng cao, VÀ nhanh chóng. AI tăng tốc mà không hy sinh chất lượng.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+  <div class="container">
+    <p>CyberGravity © 2026 · Bug Fix Process Documentation — SDD + TDD</p>
+    <p style="margin-top:4px">Bug Voucher System — Kiểm soát chất lượng từ phát hiện đến triển khai</p>
+  </div>
+</div>
+
+</body>
+</html>
