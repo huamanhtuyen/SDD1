@@ -26,7 +26,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="container-page py-32 text-center">
+      <div className="container-page py-20 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
           <ShoppingBag className="w-24 h-24 mx-auto text-text-tertiary opacity-30" />
           <h1 className="text-2xl font-heading font-bold">Giỏ hàng trống</h1>
@@ -40,7 +40,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container-page py-12">
+    <div className="container-page py-8">
       <div className="flex items-center gap-2 text-sm text-text-secondary mb-6">
         <Link href="/" className="hover:text-accent-primary">Trang chủ</Link>
         <ChevronRight className="w-4 h-4" />

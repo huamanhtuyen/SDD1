@@ -31,9 +31,9 @@ export default function BuildPCPage() {
   };
 
   return (
-    <div className="container-page py-12">
-      <h1 className="text-2xl md:text-3xl font-heading font-bold mb-3"><span className="gradient-text">Build</span> PC</h1>
-      <p className="text-text-secondary mb-10">Chọn linh kiện và ráp cấu hình máy tính theo ý bạn</p>
+    <div className="container-page py-8">
+      <h1 className="text-2xl md:text-3xl font-heading font-bold mb-2"><span className="gradient-text">Build</span> PC</h1>
+      <p className="text-text-secondary mb-8">Chọn linh kiện và ráp cấu hình máy tính theo ý bạn</p>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-3">
